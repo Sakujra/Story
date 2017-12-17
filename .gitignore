@@ -55,9 +55,3 @@ freeline.py
 freeline/
 freeline_project_description.json
 
-.idea/
-settings.gradle
-gradlew.bat
-gradlew
-gradle/
-gradle.properties
