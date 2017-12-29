@@ -3,4 +3,11 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--纸片效果-->
+    <color name="white_parent">#EBEEF2</color>
+    <color name="white_child">#FAFAFA</color>
+
+    <!--按下反馈颜色-->
+    <color name="z_item_storylist_press">#22898989</color>
 </resources>

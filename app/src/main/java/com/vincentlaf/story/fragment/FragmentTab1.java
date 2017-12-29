@@ -1,4 +1,4 @@
-package com.vincentlaf.story;
+package com.vincentlaf.story.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.vincentlaf.story.R;
 
 /**
  * Created by VincentLaf on 2017/12/17.
