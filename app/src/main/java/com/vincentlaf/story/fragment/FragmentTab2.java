@@ -1,7 +1,9 @@
 package com.vincentlaf.story.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.vincentlaf.story.R;
+import com.vincentlaf.story.activity.StoryDetailsActivity;
 import com.vincentlaf.story.adapter.StoryListAdapter;
 import com.vincentlaf.story.bean.ItemStoryList;
 
@@ -48,12 +51,12 @@ public class FragmentTab2 extends Fragment {
         mStoryListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Toast.makeText(getContext(), "Clicked", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Clicked", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getContext(), StoryDetailsActivity.class));
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mRecyclerView.setAdapter(mStoryListAdapter);
     }
-
 
 }
