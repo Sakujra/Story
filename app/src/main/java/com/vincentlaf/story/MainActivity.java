@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private ViewPager mViewPager;
+    private CustomViewPager mViewPager;
     private TabLayout mTabLayout;
 
     @Override
@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity
 
         mViewPager = findViewById(R.id.z_viewpager_main);
         mTabLayout = findViewById(R.id.z_tablayout_main);
+
+        mViewPager.setIsScrollable(false);
         //初始化ViewPager
         mViewPager.setAdapter(
                 new MainPagerAdapter(getSupportFragmentManager())
