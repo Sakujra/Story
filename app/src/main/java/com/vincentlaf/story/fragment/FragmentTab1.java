@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.vincentlaf.story.R;
 
@@ -41,8 +43,24 @@ public class FragmentTab1 extends Fragment {
         mAMap.getUiSettings().setMyLocationButtonEnabled(true);
 //        mAMap.setLocationSource(this);
         mAMap.setMyLocationEnabled(true);
+        setMapStatusLimits(mAMap,114.343257,30.529476,114.389034,30.564807);
     }
-
+    /**
+     * 设置地图的显示范围
+     * @param aMap
+     * @param sy 西南经度
+     * @param sx 西南纬度
+     * @param ny 东北经度
+     * @param nx 东北纬度
+     */
+    private void setMapStatusLimits(AMap aMap,double sy,double sx,double ny,double nx){
+        // 西南坐标
+        LatLng southwestLatLng = new LatLng(sx, sy);
+        // 东北坐标
+        LatLng northeastLatLng = new LatLng(nx,ny);
+        LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
+        aMap.setMapStatusLimits(latLngBounds);
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
