@@ -27,6 +27,7 @@ import com.vincentlaf.story.others.CustomViewPager;
 import com.vincentlaf.story.fragment.FragmentTab1;
 import com.vincentlaf.story.fragment.FragmentTab2;
 import com.vincentlaf.story.R;
+import com.vincentlaf.story.others.ToastUtil;
 
 import java.util.ArrayList;
 
@@ -158,7 +159,8 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this, "settings 尚未实现", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_search:
-                Toast.makeText(this, "search 尚未实现", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "search 尚未实现", Toast.LENGTH_SHORT).show();
+                ToastUtil.toast("search 尚未实现");
                 break;
             default:
         }

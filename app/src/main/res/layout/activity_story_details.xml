@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="com.vincentlaf.story.activity.StoryDetailsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
+        android:fitsSystemWindows="true"
         android:layout_height="250dp"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -16,11 +18,13 @@
             android:id="@+id/z_collapsingtoolbarlayout_story"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:contentScrim="@color/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
+                android:fitsSystemWindows="true"
                 android:id="@+id/z_imageview_story"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
