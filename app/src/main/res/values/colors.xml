@@ -10,4 +10,10 @@
 
     <!--按下反馈颜色-->
     <color name="z_item_storylist_press">#22898989</color>
+
+    <color name="z_color_like">#ff575f</color>
+
+    <color name="z_battle_ship_grey">#535752</color>
+    <color name="z_medium_turquoise">#3CCAD2</color>
+    <color name="z_light_grey">#D6D6D6</color>
 </resources>

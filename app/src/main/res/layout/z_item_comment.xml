@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/z_relative_layout_comment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/z_item_storylist_selector"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/z_img_comment_item"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/avatar_1" />
+
+        <LinearLayout
+            android:id="@+id/z_linearlayout_comment_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/z_img_comment_item">
+
+            <TextView
+                android:id="@+id/z_txt_comment_item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                android:text="Alex Boyd"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/z_txt_comment_item_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="2017年12月30日 13:24" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/z_txt_comment_item_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/z_linearlayout_comment_item_name"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/z_img_comment_item"
+            android:text="生死有命，富贵在天。" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/z_txt_comment_item_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/z_ripple"
+            android:drawableLeft="@drawable/ic_like_not_24dp"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:text="1,122" />
+
+        <TextView
+            android:id="@+id/z_txt_comment_item_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="90dp"
+            android:background="@drawable/z_ripple"
+            android:drawableLeft="@drawable/ic_comment_24dp"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:text="11" />
+    </RelativeLayout>
+</LinearLayout>
+
