@@ -1,10 +1,14 @@
 package com.vincentlaf.story.activity;
 
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,11 +17,32 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.vincentlaf.story.R;
+import com.vincentlaf.story.adapter.CommentListAdapter;
+import com.vincentlaf.story.bean.ItemCommentList;
+import com.vincentlaf.story.others.ToastUtil;
+
+import java.util.ArrayList;
 
 public class StoryDetailsActivity extends AppCompatActivity {
 
     private FloatingActionButton mFab;
+
+    private TextView mTxtBtnLike;
+    private boolean mIsLike = false;
+
+    private TextView mTxtBtnComment;
+
+    private TextView mTxtBtnFavorite;
+    private boolean mIsFavorite = false;
+
+    private RecyclerView mRecyclerView;
+    private NestedScrollView mScrollView;
+
+    private ArrayList<ItemCommentList> mItemList = new ArrayList<>();
+
+    private CommentListAdapter mAdapter;
 
     private String mImgUrl = "https://cn.bing.com/az/hprichbg/rb/PineZion_ZH-CN13789067332_1920x1080.jpg";
 
@@ -36,10 +61,15 @@ public class StoryDetailsActivity extends AppCompatActivity {
 
         mFab = (FloatingActionButton) findViewById(R.id.z_fab_story);
 
+        mTxtBtnLike = (TextView) findViewById(R.id.z_txt_btn_like);
+        mTxtBtnComment = (TextView) findViewById(R.id.z_txt_btn_comment);
+        mTxtBtnFavorite = (TextView) findViewById(R.id.z_txt_btn_favorite);
+        mRecyclerView = (RecyclerView) findViewById(R.id.z_recyclerview_comments);
+        mScrollView = (NestedScrollView) findViewById(R.id.z_scrollview_story);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.z_toolbar_story);
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.z_collapsingtoolbarlayout_story);
         ImageView imageView = (ImageView) findViewById(R.id.z_imageview_story);
-        TextView textView = (TextView) findViewById(R.id.z_textview_test);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -47,15 +77,67 @@ public class StoryDetailsActivity extends AppCompatActivity {
         }
         collapsingToolbarLayout.setTitle("story");
         Glide.with(this).load(mImgUrl).into(imageView);
-        textView.setText(mContent);
 
-        //悬浮按钮点击事件
-        mFab.setOnClickListener(new View.OnClickListener() {
+
+        //喜欢
+        mTxtBtnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(StoryDetailsActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                if (mIsLike) {
+                    Drawable icon = getResources().getDrawable(R.drawable.ic_like_not_24dp);
+                    icon.setBounds(0, 0, icon.getMinimumWidth(), icon.getMinimumHeight());
+                    mTxtBtnLike.setCompoundDrawables(icon, null, null, null);
+                    mIsLike = false;
+                } else {
+                    Drawable icon = getResources().getDrawable(R.drawable.ic_like_24dp);
+                    icon.setBounds(0, 0, icon.getMinimumWidth(), icon.getMinimumHeight());
+                    mTxtBtnLike.setCompoundDrawables(icon, null, null, null);
+                    mIsLike = true;
+                }
             }
         });
+
+        //评论
+        mTxtBtnComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToastUtil.toast("comment");
+            }
+        });
+
+        //收藏
+        mTxtBtnFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mIsFavorite) {
+                    Drawable icon = getResources().getDrawable(R.drawable.ic_favorite_not_24dp);
+                    icon.setBounds(0, 0, icon.getMinimumWidth(), icon.getMinimumHeight());
+                    mTxtBtnFavorite.setCompoundDrawables(null, null, icon, null);
+                    mIsFavorite = false;
+                } else {
+                    Drawable icon = getResources().getDrawable(R.drawable.ic_favorite_24dp);
+                    icon.setBounds(0, 0, icon.getMinimumWidth(), icon.getMinimumHeight());
+                    mTxtBtnFavorite.setCompoundDrawables(null, null, icon, null);
+                    mIsFavorite = true;
+                }
+            }
+        });
+
+        //评论列表初始化
+        for (int i = 0; i < 10; i++) {
+            mItemList.add(new ItemCommentList());
+        }
+        mAdapter = new CommentListAdapter(R.layout.z_item_comment, mItemList);
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ToastUtil.toast("Clicked");
+            }
+        });
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mAdapter);
+
+        mScrollView.smoothScrollTo(0, 0);
     }
 
     @Override
