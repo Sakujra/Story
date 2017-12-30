@@ -7,5 +7,10 @@
         android:id="@+id/z_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/z_recyclerview_frag1"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -6,4 +6,17 @@ package com.vincentlaf.story.others;
  */
 
 public class MarkerInfomation {
+    private String placeName;
+
+    public MarkerInfomation(String placeName) {
+        setPlaceName(placeName);
+    }
+
+    public String getPlaceName() {
+        return placeName;
+    }
+
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
+    }
 }

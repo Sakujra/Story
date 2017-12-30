@@ -5,13 +5,19 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,9 +30,16 @@ import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.amap.api.maps.model.Poi;
 import com.vincentlaf.story.R;
+import com.vincentlaf.story.others.App;
+import com.vincentlaf.story.others.AuthorAdapter;
+import com.vincentlaf.story.others.AuthorInformation;
 import com.vincentlaf.story.others.MarkerCollection;
 import com.vincentlaf.story.others.MarkerInfomation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by VincentLaf on 2017/12/17.
@@ -35,7 +48,6 @@ import com.vincentlaf.story.others.MarkerInfomation;
 public class FragmentTab1 extends Fragment {
 
     private MapView mMapView;
-
     private AMap mAMap;
 
     @Nullable
@@ -46,7 +58,7 @@ public class FragmentTab1 extends Fragment {
         return view;
     }
 
-    private void initview(Bundle savedInstanceState, View view) {
+    private void initview(Bundle savedInstanceState, final View view) {
         mMapView = view.findViewById(R.id.z_map);
         mMapView.onCreate(savedInstanceState);
         if (mAMap == null) {
@@ -55,6 +67,8 @@ public class FragmentTab1 extends Fragment {
 
 
 
+        UiSettings uiSettings=mAMap.getUiSettings();
+        uiSettings.setLogoBottomMargin(-50);
         // 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
         //初始化定位蓝点样式类
         setLocation(mAMap);
@@ -63,8 +77,8 @@ public class FragmentTab1 extends Fragment {
         //设置手势
         setGesture(mAMap);
         //向服务器请求数据后添加Marker
-        MarkerCollection markerCollection=new MarkerCollection(mAMap);
-        Object a=new MarkerInfomation();
+        final MarkerCollection markerCollection=new MarkerCollection(mAMap);
+        Object a=new MarkerInfomation("a");
         markerCollection.addMarker(30.537615,114.364966,a);
         markerCollection.addMarker(30.537615,114.364066,a);
         //设置自定义窗口
@@ -104,7 +118,8 @@ public class FragmentTab1 extends Fragment {
                 } else {
                     titleUi.setText("");
                 }
-                String snippet = marker.getSnippet();
+                MarkerInfomation markerInfomation=(MarkerInfomation)marker.getObject();
+                String snippet = markerInfomation.getPlaceName();
                 TextView snippetUi = ((TextView) view.findViewById(R.id.snippet));
                 if (snippet != null) {
                     SpannableString snippetText = new SpannableString(snippet);
@@ -123,9 +138,64 @@ public class FragmentTab1 extends Fragment {
                 Toast.makeText(getContext(), "您点击了Marker", Toast.LENGTH_LONG).show();
                 marker.setTitle(marker.getTitle());
                 marker.showInfoWindow();
+                initRecyclerView(view,getAuthorInformationList());
                 return true;
             }
         });
+        //地图poi点击功能
+        final MarkerCollection markerCollection1=new MarkerCollection(mAMap);
+        mAMap.setOnPOIClickListener(new AMap.OnPOIClickListener() {
+            @Override
+            public void onPOIClick(Poi poi) {
+                markerCollection1.clearAll();
+                markerCollection1.addMarker(poi.getCoordinate().latitude,poi.getCoordinate().longitude,new MarkerInfomation(poi.getName()));
+                Marker marker=(Marker) markerCollection1.getMarkerList().get(0);
+                marker.showInfoWindow();
+            }
+        });
+        mAMap.setOnMapClickListener(new AMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                view.findViewById(R.id.z_recyclerview_frag1).setVisibility(View.INVISIBLE);
+                if(markerCollection.getMarkerList().size()>0){
+                    for (int i = 0; i <markerCollection.getMarkerList().size() ; i++) {
+                       Marker marker= (Marker)markerCollection.getMarkerList().get(i);
+                       marker.hideInfoWindow();
+                    }
+                }
+                if(markerCollection1.getMarkerList().size()>0){
+                    for (int i = 0; i <markerCollection1.getMarkerList().size() ; i++) {
+                        Marker marker= (Marker)markerCollection1.getMarkerList().get(i);
+                        marker.hideInfoWindow();
+                    }
+                }
+
+            }
+        });
+    }
+    private void initRecyclerView(View view,List<AuthorInformation> authorInformationList){
+        RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.z_recyclerview_frag1);
+        if(recyclerView.getVisibility()==View.INVISIBLE){
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+        LinearLayoutManager layoutManager=new LinearLayoutManager(App.getContext());
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView.setLayoutManager(layoutManager);
+        SnapHelper snapHelper=new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerView);
+        AuthorAdapter adapter=new AuthorAdapter(authorInformationList);
+        recyclerView.setAdapter(adapter);
+    }
+    private List getAuthorInformationList(){
+        List <AuthorInformation> authorInformationList=new ArrayList<>();
+        authorInformationList.add(new AuthorInformation("张世杰",R.drawable.avatar_1,"我牛逼","我超级帅！"));
+        authorInformationList.add(new AuthorInformation("张世杰",R.drawable.avatar_1,"我牛逼","我超级帅！"));
+        authorInformationList.add(new AuthorInformation("张世杰",R.drawable.avatar_1,"我牛逼","我超级帅！"));
+        authorInformationList.add(new AuthorInformation("张世杰",R.drawable.avatar_1,"我牛逼","我超级帅！"));
+        authorInformationList.add(new AuthorInformation("张世杰",R.drawable.avatar_1,"我牛逼","我超级帅！"));
+        authorInformationList.add(new AuthorInformation("张世杰",R.drawable.avatar_1,"我牛逼","我超级帅！"));
+        authorInformationList.add(new AuthorInformation("张世杰",R.drawable.avatar_1,"我牛逼","我超级帅！"));
+        return authorInformationList;
     }
     /**
      * 设置地图的显示范围

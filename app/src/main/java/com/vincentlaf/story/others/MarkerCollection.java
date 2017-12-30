@@ -26,12 +26,20 @@ public class MarkerCollection{
     }
     private List <Marker>markerList=new ArrayList();
 
+    public List getMarkerList(){
+        return  this.markerList;
+    }
+    public void setMarkerList(List <Marker>markerList){
+          this.markerList=markerList;
+    }
     /**
      * 移除所有标记
      */
     public void clearAll(){
         if(aMap!=null){
-            aMap.clear();
+            for (int i = 0; i <markerList.size() ; i++) {
+                removeMarker(markerList.get(i));
+            }
         }
         markerList.clear();
     }
@@ -45,7 +53,7 @@ public class MarkerCollection{
      */
     public void addMarker(double x,double y,Object information){
         LatLng latLng=new LatLng(x,y);
-        MarkerOptions  markerOption = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.purple_pin))
+        MarkerOptions  markerOption = new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .position(latLng)
                 .title(latLng.toString())
                 .snippet("aa")
