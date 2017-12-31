@@ -8,10 +8,10 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_search"
-        android:title="搜索"
+        android:id="@+id/action_post"
+        android:title="发布"
         app:showAsAction="always"
-        android:icon="@drawable/ic_search_black_24dp"
+        android:icon="@drawable/ic_post_24dp"
         />
 
 </menu>

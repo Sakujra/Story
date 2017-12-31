@@ -58,6 +58,7 @@ public class FragmentTab1 extends Fragment {
         return view;
     }
 
+
     private void initview(Bundle savedInstanceState, final View view) {
         mMapView = view.findViewById(R.id.z_map);
         mMapView.onCreate(savedInstanceState);
@@ -65,25 +66,24 @@ public class FragmentTab1 extends Fragment {
             mAMap = mMapView.getMap();
         }
 
-
-
-        UiSettings uiSettings=mAMap.getUiSettings();
+        UiSettings uiSettings = mAMap.getUiSettings();
         uiSettings.setLogoBottomMargin(-50);
         // 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
         //初始化定位蓝点样式类
         setLocation(mAMap);
         //设置地图范围
-        setMapStatusLimits(mAMap,114.332933,30.514793,114.391641,30.5624);
+        setMapStatusLimits(mAMap, 114.332933, 30.514793, 114.391641, 30.5624);
         //设置手势
         setGesture(mAMap);
         //向服务器请求数据后添加Marker
-        final MarkerCollection markerCollection=new MarkerCollection(mAMap);
-        Object a=new MarkerInfomation("a");
-        markerCollection.addMarker(30.537615,114.364966,a);
-        markerCollection.addMarker(30.537615,114.364066,a);
+        final MarkerCollection markerCollection = new MarkerCollection(mAMap);
+        Object a = new MarkerInfomation("a");
+        markerCollection.addMarker(30.537615, 114.364966, a);
+        markerCollection.addMarker(30.537615, 114.364066, a);
         //设置自定义窗口
         mAMap.setInfoWindowAdapter(new AMap.InfoWindowAdapter() {
             View infoWindow = null;
+
             @Override
             public View getInfoWindow(Marker marker) {
                 /*if(infoWindow == null) {
@@ -104,8 +104,9 @@ public class FragmentTab1 extends Fragment {
                 render(marker, infoContent);
                 return infoContent;
             }
+
             public void render(Marker marker, View view) {
-            //如果想修改自定义Infow中内容，请通过view找到它并修改
+                //如果想修改自定义Infow中内容，请通过view找到它并修改
                 String title = marker.getTitle();
                 TextView titleUi = ((TextView) view.findViewById(R.id.title));
                 if (title != null) {
@@ -118,7 +119,7 @@ public class FragmentTab1 extends Fragment {
                 } else {
                     titleUi.setText("");
                 }
-                MarkerInfomation markerInfomation=(MarkerInfomation)marker.getObject();
+                MarkerInfomation markerInfomation = (MarkerInfomation) marker.getObject();
                 String snippet = markerInfomation.getPlaceName();
                 TextView snippetUi = ((TextView) view.findViewById(R.id.snippet));
                 if (snippet != null) {
@@ -138,18 +139,18 @@ public class FragmentTab1 extends Fragment {
                 Toast.makeText(getContext(), "您点击了Marker", Toast.LENGTH_LONG).show();
                 marker.setTitle(marker.getTitle());
                 marker.showInfoWindow();
-                initRecyclerView(view,getAuthorInformationList());
+                initRecyclerView(view, getAuthorInformationList());
                 return true;
             }
         });
         //地图poi点击功能
-        final MarkerCollection markerCollection1=new MarkerCollection(mAMap);
+        final MarkerCollection markerCollection1 = new MarkerCollection(mAMap);
         mAMap.setOnPOIClickListener(new AMap.OnPOIClickListener() {
             @Override
             public void onPOIClick(Poi poi) {
                 markerCollection1.clearAll();
-                markerCollection1.addMarker(poi.getCoordinate().latitude,poi.getCoordinate().longitude,new MarkerInfomation(poi.getName()));
-                Marker marker=(Marker) markerCollection1.getMarkerList().get(0);
+                markerCollection1.addMarker(poi.getCoordinate().latitude, poi.getCoordinate().longitude, new MarkerInfomation(poi.getName()));
+                Marker marker = (Marker) markerCollection1.getMarkerList().get(0);
                 marker.showInfoWindow();
             }
         });
@@ -157,15 +158,15 @@ public class FragmentTab1 extends Fragment {
             @Override
             public void onMapClick(LatLng latLng) {
                 view.findViewById(R.id.z_recyclerview_frag1).setVisibility(View.INVISIBLE);
-                if(markerCollection.getMarkerList().size()>0){
-                    for (int i = 0; i <markerCollection.getMarkerList().size() ; i++) {
-                       Marker marker= (Marker)markerCollection.getMarkerList().get(i);
-                       marker.hideInfoWindow();
+                if (markerCollection.getMarkerList().size() > 0) {
+                    for (int i = 0; i < markerCollection.getMarkerList().size(); i++) {
+                        Marker marker = (Marker) markerCollection.getMarkerList().get(i);
+                        marker.hideInfoWindow();
                     }
                 }
-                if(markerCollection1.getMarkerList().size()>0){
-                    for (int i = 0; i <markerCollection1.getMarkerList().size() ; i++) {
-                        Marker marker= (Marker)markerCollection1.getMarkerList().get(i);
+                if (markerCollection1.getMarkerList().size() > 0) {
+                    for (int i = 0; i < markerCollection1.getMarkerList().size(); i++) {
+                        Marker marker = (Marker) markerCollection1.getMarkerList().get(i);
                         marker.hideInfoWindow();
                     }
                 }
@@ -173,43 +174,47 @@ public class FragmentTab1 extends Fragment {
             }
         });
     }
-    private void initRecyclerView(View view,List<AuthorInformation> authorInformationList){
-        RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.z_recyclerview_frag1);
-        if(recyclerView.getVisibility()==View.INVISIBLE){
+
+    private void initRecyclerView(View view, List<AuthorInformation> authorInformationList) {
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.z_recyclerview_frag1);
+        if (recyclerView.getVisibility() == View.INVISIBLE) {
             recyclerView.setVisibility(View.VISIBLE);
         }
-        LinearLayoutManager layoutManager=new LinearLayoutManager(App.getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(App.getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
-        SnapHelper snapHelper=new LinearSnapHelper();
+        SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
-        AuthorAdapter adapter=new AuthorAdapter(authorInformationList);
+        AuthorAdapter adapter = new AuthorAdapter(authorInformationList);
         recyclerView.setAdapter(adapter);
     }
-    private List getAuthorInformationList(){
-        List <AuthorInformation> authorInformationList=new ArrayList<>();
-        authorInformationList.add(new AuthorInformation("张世杰",R.drawable.avatar_1,"我牛逼","我超级帅！"));
-        authorInformationList.add(new AuthorInformation("张世杰",R.drawable.avatar_1,"我牛逼","我超级帅！"));
-        authorInformationList.add(new AuthorInformation("张世杰",R.drawable.avatar_1,"我牛逼","我超级帅！"));
-        authorInformationList.add(new AuthorInformation("张世杰",R.drawable.avatar_1,"我牛逼","我超级帅！"));
-        authorInformationList.add(new AuthorInformation("张世杰",R.drawable.avatar_1,"我牛逼","我超级帅！"));
-        authorInformationList.add(new AuthorInformation("张世杰",R.drawable.avatar_1,"我牛逼","我超级帅！"));
-        authorInformationList.add(new AuthorInformation("张世杰",R.drawable.avatar_1,"我牛逼","我超级帅！"));
+
+    private List getAuthorInformationList() {
+        List<AuthorInformation> authorInformationList = new ArrayList<>();
+        authorInformationList.add(new AuthorInformation("张世杰", R.drawable.avatar_1, "我牛逼", "我超级帅！"));
+        authorInformationList.add(new AuthorInformation("张世杰", R.drawable.avatar_1, "我牛逼", "我超级帅！"));
+        authorInformationList.add(new AuthorInformation("张世杰", R.drawable.avatar_1, "我牛逼", "我超级帅！"));
+        authorInformationList.add(new AuthorInformation("张世杰", R.drawable.avatar_1, "我牛逼", "我超级帅！"));
+        authorInformationList.add(new AuthorInformation("张世杰", R.drawable.avatar_1, "我牛逼", "我超级帅！"));
+        authorInformationList.add(new AuthorInformation("张世杰", R.drawable.avatar_1, "我牛逼", "我超级帅！"));
+        authorInformationList.add(new AuthorInformation("张世杰", R.drawable.avatar_1, "我牛逼", "我超级帅！"));
         return authorInformationList;
     }
+
     /**
      * 设置地图的显示范围
+     *
      * @param aMap
-     * @param sy 西南经度
-     * @param sx 西南纬度
-     * @param ny 东北经度
-     * @param nx 东北纬度
+     * @param sy   西南经度
+     * @param sx   西南纬度
+     * @param ny   东北经度
+     * @param nx   东北纬度
      */
-    private void setMapStatusLimits(AMap aMap,double sy,double sx,double ny,double nx){
+    private void setMapStatusLimits(AMap aMap, double sy, double sx, double ny, double nx) {
         // 西南坐标
         LatLng southwestLatLng = new LatLng(sx, sy);
         // 东北坐标
-        LatLng northeastLatLng = new LatLng(nx,ny);
+        LatLng northeastLatLng = new LatLng(nx, ny);
         LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
         aMap.setMapStatusLimits(latLngBounds);
     }
@@ -217,18 +222,18 @@ public class FragmentTab1 extends Fragment {
     /**
      * 设置手势
      */
-    private void setGesture(AMap aMap){
-        UiSettings mUiSettings=aMap.getUiSettings();
+    private void setGesture(AMap aMap) {
+        UiSettings mUiSettings = aMap.getUiSettings();
         mUiSettings.setRotateGesturesEnabled(false);//旋转
         mUiSettings.setTiltGesturesEnabled(false);//倾斜
     }
 
     /**
      * 设置地图定位
+     *
      * @param aMap
      */
-    private void setLocation(AMap aMap){
-
+    private void setLocation(AMap aMap) {
         MyLocationStyle myLocationStyle;
         myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);
@@ -241,10 +246,11 @@ public class FragmentTab1 extends Fragment {
             @Override
             public void onMyLocationChange(Location location) {
                 //从location对象中获取经纬度信息，地址描述信息，建议拿到位置之后调用逆地理编码接口获取
-                Log.d("位置信息",location.toString());
+                Log.d("位置信息", location.toString());
             }
         });
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

@@ -26,7 +26,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
-        android:name="com.vincentlaf.story.others.App"
+        android:name=".others.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -37,9 +37,9 @@
             android:name="com.amap.api.v2.apikey"
             android:value="a4db6d84c5154273549e9dcf7c41f7ee" />
 
-
-        <service android:name="com.amap.api.location.APSService"
-            android:enabled="true"/>
+        <service
+            android:name="com.amap.api.location.APSService"
+            android:enabled="true" />
 
         <activity
             android:name=".activity.MainActivity"
@@ -54,6 +54,19 @@
         <activity
             android:name=".activity.StoryDetailsActivity"
             android:theme="@style/StoryActivityTheme" />
+        <activity
+            android:name=".activity.PostActivity"
+            android:theme="@style/StoryActivityTheme" />
+        <!--拍照-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.vincentlaf.story.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

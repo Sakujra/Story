@@ -78,7 +78,6 @@ public class StoryDetailsActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle("story");
         Glide.with(this).load(mImgUrl).into(imageView);
 
-
         //喜欢
         mTxtBtnLike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,12 +127,12 @@ public class StoryDetailsActivity extends AppCompatActivity {
             mItemList.add(new ItemCommentList());
         }
         mAdapter = new CommentListAdapter(R.layout.z_item_comment, mItemList);
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtil.toast("Clicked");
-            }
-        });
+//        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//                ToastUtil.toast("Clicked");
+//            }
+//        });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
 

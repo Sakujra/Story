@@ -1,6 +1,7 @@
 package com.vincentlaf.story.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -147,20 +148,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-
-        switch (id) {
+        switch (item.getItemId()) {
             case R.id.action_settings:
                 Toast.makeText(this, "settings 尚未实现", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.action_search:
-//                Toast.makeText(this, "search 尚未实现", Toast.LENGTH_SHORT).show();
-                ToastUtil.toast("search 尚未实现");
+            case R.id.action_post:
+                startActivity(new Intent(this, PostActivity.class));
                 break;
             default:
         }
