@@ -150,7 +150,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Toast.makeText(this, "settings 尚未实现", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "settings 尚未实现", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this,LoginActivity.class));
                 break;
             case R.id.action_post:
                 startActivity(new Intent(this, PostActivity.class));

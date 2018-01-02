@@ -25,6 +25,11 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:name=".others.App"
         android:allowBackup="true"
@@ -57,7 +62,7 @@
         <activity
             android:name=".activity.PostActivity"
             android:theme="@style/StoryActivityTheme" />
-        <!--拍照-->
+        <!-- 拍照 -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.vincentlaf.story.fileprovider"
@@ -67,6 +72,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <activity
+            android:name=".activity.LoginActivity"
+            android:label="@string/title_activity_login"></activity>
     </application>
 
 </manifest>
