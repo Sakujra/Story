@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -126,7 +125,7 @@ public class PostActivity extends AppCompatActivity {
     private void setupBottomDialog() {
         mDialog = new Dialog(this, R.style.ActionSheetDialogStyle);
         //填充对话框的布局
-        View view = LayoutInflater.from(this).inflate(R.layout.z_layout_bottom_dialog, null);
+        View view = LayoutInflater.from(this).inflate(R.layout.z_dialog_get_picture, null);
         //拍照
         view.findViewById(R.id.z_btn_take_picture).setOnClickListener(new View.OnClickListener() {
             @Override

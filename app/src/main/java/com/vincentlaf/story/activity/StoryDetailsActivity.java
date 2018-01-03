@@ -1,8 +1,13 @@
 package com.vincentlaf.story.activity;
 
+import android.Manifest;
+import android.app.Dialog;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +15,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +45,8 @@ public class StoryDetailsActivity extends AppCompatActivity {
 
     private TextView mTxtBtnFavorite;
     private boolean mIsFavorite = false;
+
+    private Dialog mCommentDlg;
 
     private RecyclerView mRecyclerView;
     private NestedScrollView mScrollView;
@@ -78,6 +89,52 @@ public class StoryDetailsActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle("story");
         Glide.with(this).load(mImgUrl).into(imageView);
 
+        //初始化评论对话框
+        setupCommentDialog();
+
+        //初始化点赞、评论、收藏三个按钮
+        initBtnLikeCommentFavorite();
+
+        initCommentItems();
+
+        mAdapter = new CommentListAdapter(R.layout.z_item_comment, mItemList);
+//        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//                ToastUtil.toast("Clicked");
+//            }
+//        });
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                if (view instanceof TextView) {
+                    TextView textView = (TextView) view;
+
+                    if (mItemList.get(position).getLike()) {
+                        //取消点赞
+                        Drawable icon = getResources().getDrawable(R.drawable.ic_like_not_24dp);
+                        icon.setBounds(0, 0, icon.getMinimumWidth(), icon.getMinimumHeight());
+                        textView.setCompoundDrawables(icon, null, null, null);
+//                        mIsLike = false;
+                        mItemList.get(position).setLike(false);
+                    } else {
+                        //点赞
+                        Drawable icon = getResources().getDrawable(R.drawable.ic_like_24dp);
+                        icon.setBounds(0, 0, icon.getMinimumWidth(), icon.getMinimumHeight());
+                        textView.setCompoundDrawables(icon, null, null, null);
+//                        mIsLike = true;
+                        mItemList.get(position).setLike(true);
+                    }
+                }
+            }
+        });
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mAdapter);
+
+        mScrollView.smoothScrollTo(0, 0);
+    }
+
+    private void initBtnLikeCommentFavorite() {
         //喜欢
         mTxtBtnLike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +157,7 @@ public class StoryDetailsActivity extends AppCompatActivity {
         mTxtBtnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUtil.toast("comment");
+               mCommentDlg.show();
             }
         });
 
@@ -121,22 +178,45 @@ public class StoryDetailsActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void setupCommentDialog() {
+        mCommentDlg = new Dialog(this, R.style.ActionSheetDialogStyle);
+        //填充对话框的布局
+        View view = LayoutInflater.from(this).inflate(R.layout.z_dialog_comment, null);
+        //取消
+        view.findViewById(R.id.z_btn_comment_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCommentDlg.dismiss();
+            }
+        });
+        view.findViewById(R.id.z_btn_comment_send).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToastUtil.toast("发送");
+                mCommentDlg.dismiss();
+            }
+        });
+        //将布局设置给Dialog
+        mCommentDlg.setContentView(view);
+        //获取当前Activity所在的窗体
+        Window dialogWindow = mCommentDlg.getWindow();
+        //设置Dialog在窗体底部
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        //获得窗体的属性
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        //全宽
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+    }
+
+    private void initCommentItems() {
         //评论列表初始化
         for (int i = 0; i < 10; i++) {
-            mItemList.add(new ItemCommentList());
+            ItemCommentList item = new ItemCommentList();
+            item.setLike(false);
+            mItemList.add(item);
         }
-        mAdapter = new CommentListAdapter(R.layout.z_item_comment, mItemList);
-//        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                ToastUtil.toast("Clicked");
-//            }
-//        });
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mAdapter);
-
-        mScrollView.smoothScrollTo(0, 0);
     }
 
     @Override

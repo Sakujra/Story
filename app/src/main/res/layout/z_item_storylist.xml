@@ -9,7 +9,6 @@
     android:background="@drawable/z_item_storylist_selector">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/applicants_img"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center_vertical"
@@ -25,54 +24,48 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/z_release_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="超市伊利牛奶促销"
+            android:text="给一个焦虑症的朋友"
             android:textSize="16sp" />
 
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/z_release_salary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:text="100元/天"
-                android:textColor="#ff7214" />
-
-            <TextView
-                android:id="@+id/z_release_paytype"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="日结" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp">
+            android:layout_marginRight="8dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="很多时候，片面的批评与责备，是不理解导致的不宽容"
+            android:textColor="#ff7214" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="8dp">
 
             <TextView
-                android:id="@+id/z_release_hotspot"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:text="街道口"
+                android:layout_weight="2"
+                android:text="Alex Boyd"
                 android:textSize="12dp" />
 
             <TextView
-                android:id="@+id/z_release_time"
-                android:layout_width="wrap_content"
+
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="2017/09/30-2017/10/15"
+                android:layout_weight="2"
+                android:text="2018年01月03日"
                 android:textSize="12dp" />
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:paddingRight="8dp"
+                android:text="1.6km" />
         </LinearLayout>
 
     </LinearLayout>
