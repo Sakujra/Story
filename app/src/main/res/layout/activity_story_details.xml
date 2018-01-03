@@ -13,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        >
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/z_collapsingtoolbarlayout_story"
@@ -40,9 +39,6 @@
                 app:layout_collapseMode="pin" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
-
-
-
 
 
     </android.support.design.widget.AppBarLayout>
@@ -149,6 +145,5 @@
         android:layout_margin="16dp"
         app:layout_anchor="@id/appbar"
         app:layout_anchorGravity="bottom|end" />
-
 
 </android.support.design.widget.CoordinatorLayout>

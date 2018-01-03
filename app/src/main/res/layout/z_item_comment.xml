@@ -7,8 +7,8 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="8dp"
-    android:orientation="vertical"
     android:background="@drawable/z_item_storylist_bg_normal"
+    android:orientation="vertical"
     android:paddingBottom="8dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
@@ -32,19 +32,24 @@
 
             <TextView
                 android:id="@+id/z_txt_comment_item_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="16dp"
+                android:layout_weight="1"
                 android:text="Alex Boyd"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/z_txt_comment_item_time"
-                android:layout_width="match_parent"
+                android:id="@+id/z_txt_comment_item_like"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="2017年12月30日 13:24" />
+                android:background="@drawable/z_ripple"
+                android:drawableLeft="@drawable/ic_like_not_24dp"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="1,122" />
+
         </LinearLayout>
 
         <TextView
@@ -53,37 +58,23 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/z_linearlayout_comment_item_name"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
             android:layout_toRightOf="@+id/z_img_comment_item"
-            android:text="生死有命，富贵在天。" />
+            android:text="“一个人真正成熟的标志，就是发觉可以责怪的人越来越少。理由很简单，人人都有自己的难处，而你，不一定懂得他们的生活。”" />
     </RelativeLayout>
-
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:gravity="right">
 
         <TextView
-            android:id="@+id/z_txt_comment_item_like"
-            android:layout_width="wrap_content"
+            android:id="@+id/z_txt_comment_item_time"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/z_ripple"
-            android:drawableLeft="@drawable/ic_like_not_24dp"
-            android:drawablePadding="5dp"
-            android:gravity="center_vertical"
-            android:text="1,122" />
+            android:gravity="right"
+            android:text="2017年12月30日 13:24" />
 
-        <TextView
-            android:id="@+id/z_txt_comment_item_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="90dp"
-            android:background="@drawable/z_ripple"
-            android:drawableLeft="@drawable/ic_comment_24dp"
-            android:drawablePadding="5dp"
-            android:gravity="center_vertical"
-            android:text="11" />
+
     </RelativeLayout>
 </LinearLayout>
 

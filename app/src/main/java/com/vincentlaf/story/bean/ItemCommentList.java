@@ -5,12 +5,23 @@ package com.vincentlaf.story.bean;
  */
 
 public class ItemCommentList {
+
     private String imgUrl;
     private String name;
-    private String time;
-    private String content;
+    private Boolean isLike;
     private int likeCount;
-    private int commentCount;
+    private String content;
+    private String time;
+
+
+    public void setLike(Boolean like) {
+        isLike = like;
+    }
+
+    public Boolean getLike() {
+
+        return isLike;
+    }
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
@@ -32,9 +43,6 @@ public class ItemCommentList {
         this.likeCount = likeCount;
     }
 
-    public void setCommentCount(int commentCount) {
-        this.commentCount = commentCount;
-    }
 
     public String getImgUrl() {
 
@@ -57,7 +65,4 @@ public class ItemCommentList {
         return likeCount;
     }
 
-    public int getCommentCount() {
-        return commentCount;
-    }
 }
