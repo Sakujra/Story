@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_post:
                 startActivity(new Intent(this, PostActivity.class));
                 break;
+
             default:
         }
 
@@ -180,6 +181,8 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
+        }else if (id==R.id.nav_collection){
+            startActivity(new Intent(this, CollectionActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

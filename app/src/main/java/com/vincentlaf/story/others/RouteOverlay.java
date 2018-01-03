@@ -1,7 +1,4 @@
-package overlay;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.vincentlaf.story.others;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,7 +14,11 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
-import com.amap.map3d.demo.R;
+import com.vincentlaf.story.R;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RouteOverlay {
 	protected List<Marker> stationMarkers = new ArrayList<Marker>();

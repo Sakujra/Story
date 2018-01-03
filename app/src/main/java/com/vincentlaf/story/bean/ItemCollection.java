@@ -5,4 +5,5 @@ package com.vincentlaf.story.bean;
  */
 
 public class ItemCollection {
+
 }

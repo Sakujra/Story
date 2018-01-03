@@ -1,5 +1,6 @@
 package com.vincentlaf.story.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -31,12 +32,22 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Poi;
+import com.amap.api.services.core.AMapException;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.route.BusRouteResult;
+import com.amap.api.services.route.DriveRouteResult;
+import com.amap.api.services.route.RideRouteResult;
+import com.amap.api.services.route.RouteSearch;
+import com.amap.api.services.route.WalkPath;
+import com.amap.api.services.route.WalkRouteResult;
 import com.vincentlaf.story.R;
 import com.vincentlaf.story.others.App;
 import com.vincentlaf.story.others.AuthorAdapter;
 import com.vincentlaf.story.others.AuthorInformation;
 import com.vincentlaf.story.others.MarkerCollection;
 import com.vincentlaf.story.others.MarkerInfomation;
+import com.vincentlaf.story.others.ToastUtil;
+import com.vincentlaf.story.others.WalkRouteOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +56,17 @@ import java.util.List;
  * Created by VincentLaf on 2017/12/17.
  */
 
-public class FragmentTab1 extends Fragment {
+public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchListener {
 
     private MapView mMapView;
     private AMap mAMap;
+
+    private WalkRouteResult mWalkRouteResult;
+    private final int ROUTE_TYPE_BUS = 1;
+    private final int ROUTE_TYPE_DRIVE = 2;
+    private final int ROUTE_TYPE_WALK = 3;
+    private final int ROUTE_TYPE_CROSSTOWN = 4;
+    private RouteSearch mRouteSearch;
 
     @Nullable
     @Override
@@ -140,6 +158,10 @@ public class FragmentTab1 extends Fragment {
                 marker.setTitle(marker.getTitle());
                 marker.showInfoWindow();
                 initRecyclerView(view, getAuthorInformationList());
+                searchRouteResult(ROUTE_TYPE_WALK,RouteSearch.WALK_DEFAULT,
+                        new LatLonPoint(mAMap.getMyLocation().getLatitude(),mAMap.getMyLocation().getLongitude()),
+                        new LatLonPoint(marker.getPosition().latitude,marker.getPosition().longitude)
+                );
                 return true;
             }
         });
@@ -152,6 +174,10 @@ public class FragmentTab1 extends Fragment {
                 markerCollection1.addMarker(poi.getCoordinate().latitude, poi.getCoordinate().longitude, new MarkerInfomation(poi.getName()));
                 Marker marker = (Marker) markerCollection1.getMarkerList().get(0);
                 marker.showInfoWindow();
+                searchRouteResult(ROUTE_TYPE_WALK,RouteSearch.WALK_DEFAULT,
+                        new LatLonPoint(mAMap.getMyLocation().getLatitude(),mAMap.getMyLocation().getLongitude()),
+                        new LatLonPoint(marker.getPosition().latitude,marker.getPosition().longitude)
+                );
             }
         });
         mAMap.setOnMapClickListener(new AMap.OnMapClickListener() {
@@ -173,6 +199,9 @@ public class FragmentTab1 extends Fragment {
 
             }
         });
+        //步行路线规划
+        mRouteSearch = new RouteSearch(getContext());
+        mRouteSearch.setRouteSearchListener(this);
     }
 
     private void initRecyclerView(View view, List<AuthorInformation> authorInformationList) {
@@ -236,7 +265,7 @@ public class FragmentTab1 extends Fragment {
     private void setLocation(AMap aMap) {
         MyLocationStyle myLocationStyle;
         myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
-        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_FOLLOW_NO_CENTER);
         myLocationStyle.showMyLocation(true);
         myLocationStyle.interval(2000); //设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒。
         aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
@@ -249,6 +278,44 @@ public class FragmentTab1 extends Fragment {
                 Log.d("位置信息", location.toString());
             }
         });
+
+    }
+    /**
+     * 开始搜索路径规划方案
+     */
+    public void searchRouteResult(int routeType, int mode,LatLonPoint mStartPoint,LatLonPoint mEndPoint) {
+        if(mStartPoint.getLatitude()==0.0){
+            mStartPoint=new LatLonPoint(114.364015,30.534631);
+        }
+        if (mStartPoint == null) {
+            ToastUtil.toast( "起点未设置");
+            return;
+        }
+        if (mEndPoint == null) {
+            ToastUtil.toast( "终点未设置");
+        }
+        //showProgressDialog();
+        final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(
+                mStartPoint, mEndPoint);
+        if (routeType == ROUTE_TYPE_BUS) {// 公交路径规划
+            RouteSearch.BusRouteQuery query = new RouteSearch.BusRouteQuery(fromAndTo, mode,
+                    "wuhan", 0);// 第一个参数表示路径规划的起点和终点，第二个参数表示公交查询模式，第三个参数表示公交查询城市区号，第四个参数表示是否计算夜班车，0表示不计算
+            mRouteSearch.calculateBusRouteAsyn(query);// 异步路径规划公交模式查询
+        } else if (routeType == ROUTE_TYPE_DRIVE) {// 驾车路径规划
+            RouteSearch.DriveRouteQuery query = new RouteSearch.DriveRouteQuery(fromAndTo, mode, null,
+                    null, "");// 第一个参数表示路径规划的起点和终点，第二个参数表示驾车模式，第三个参数表示途经点，第四个参数表示避让区域，第五个参数表示避让道路
+            mRouteSearch.calculateDriveRouteAsyn(query);// 异步路径规划驾车模式查询
+        } else if (routeType == ROUTE_TYPE_WALK) {// 步行路径规划
+            RouteSearch.WalkRouteQuery query = new RouteSearch.WalkRouteQuery(fromAndTo, mode);
+            mRouteSearch.calculateWalkRouteAsyn(query);// 异步路径规划步行模式查询
+        } else if (routeType == ROUTE_TYPE_CROSSTOWN) {
+            RouteSearch.FromAndTo fromAndTo_bus = new RouteSearch.FromAndTo(
+                    mStartPoint, mEndPoint);
+            RouteSearch.BusRouteQuery query = new RouteSearch.BusRouteQuery(fromAndTo_bus, mode,
+                    "呼和浩特市", 0);// 第一个参数表示路径规划的起点和终点，第二个参数表示公交查询模式，第三个参数表示公交查询城市区号，第四个参数表示是否计算夜班车，0表示不计算
+            query.setCityd("农安县");
+            mRouteSearch.calculateBusRouteAsyn(query);// 异步路径规划公交模式查询
+        }
     }
 
     @Override
@@ -277,5 +344,65 @@ public class FragmentTab1 extends Fragment {
         super.onSaveInstanceState(outState);
         //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，保存地图当前的状态
         mMapView.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
+
+    }
+
+    @Override
+    public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
+
+    }
+
+    @Override
+    public void onWalkRouteSearched(WalkRouteResult result, int errorCode) {
+        if (errorCode == AMapException.CODE_AMAP_SUCCESS) {
+            mAMap.clear();
+            if (result != null && result.getPaths() != null) {
+                if (result.getPaths().size() > 0) {
+                    mWalkRouteResult = result;
+                    final WalkPath walkPath = mWalkRouteResult.getPaths()
+                            .get(0);
+                    WalkRouteOverlay walkRouteOverlay = new WalkRouteOverlay(
+                            getContext(), mAMap, walkPath,
+                            mWalkRouteResult.getStartPos(),
+                            mWalkRouteResult.getTargetPos());
+                    walkRouteOverlay.removeFromMap();
+                    walkRouteOverlay.addToMap();
+                    walkRouteOverlay.zoomToSpan();
+                    /*mBottomLayout.setVisibility(View.VISIBLE);
+                    int dis = (int) walkPath.getDistance();
+                    int dur = (int) walkPath.getDuration();
+                    String des = AMapUtil.getFriendlyTime(dur)+"("+AMapUtil.getFriendlyLength(dis)+")";
+                    mRotueTimeDes.setText(des);
+                    mRouteDetailDes.setVisibility(View.GONE);
+                    mBottomLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(mContext,
+                                    WalkRouteDetailActivity.class);
+                            intent.putExtra("walk_path", walkPath);
+                            intent.putExtra("walk_result",
+                                    mWalkRouteResult);
+                            startActivity(intent);
+                        }
+                    });*/
+                } else if (result != null && result.getPaths() == null) {
+                    ToastUtil.toast("GG");
+                }
+
+            } else {
+                ToastUtil.toast("GG");;
+            }
+        } else {
+            ToastUtil.toast("错误代码"+errorCode);
+        }
+    }
+
+    @Override
+    public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
+
     }
 }
