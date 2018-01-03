@@ -36,7 +36,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.vincentlaf.story.R;
 import com.vincentlaf.story.bean.User;
+import com.vincentlaf.story.bean.result.Result;
 import com.vincentlaf.story.exception.WrongRequestException;
+import com.vincentlaf.story.others.App;
+import com.vincentlaf.story.others.ToastUtil;
 import com.vincentlaf.story.util.RequestUtil;
 
 import java.io.IOException;
@@ -330,23 +333,43 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
             //验证登录
-            User user=null;
-            JSONObject result=null;
+            User user=new User();
+            Result result=null;
             try {
-                JSONObject param=new JSONObject();
-                param.put("userPhone",mUser);
-                param.put("userPass",mPassword);
-                result = RequestUtil.doPost(RequestUtil.monitorUrl,"login", param);
+                user.setUserPhone(mUser);
+                user.setUserPass(mPassword);
+                result = RequestUtil.doPost(RequestUtil.monitorUrl,"login", user);
             }catch (WrongRequestException wre){
-                Toast.makeText(context,wre.getMessage(),Toast.LENGTH_LONG);
-                return false;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.toast("用户名或密码错误");
+                    }
+                });
             } catch (IOException e) {
-                Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.toast("网络错误");
+                    }
+                });
                 return false;
             }
-            user=JSONObject.toJavaObject(result,User.class);
+            user=result.getEntityData(User.class);
             if(user!=null){
-                Toast.makeText(context,"登录成功",Toast.LENGTH_SHORT);
+                final User u=user;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context,"登录成功",Toast.LENGTH_SHORT).show();
+                        App.setUser(u);
+                        /*TextView usernameView=(TextView)findViewById(R.id.nav_username);
+                        usernameView.setText(u.getUserName());
+
+                        TextView phoneView=(TextView)findViewById(R.id.nav_phone);
+                        phoneView.setText(u.getUserPhone());*/
+                    }
+                });
                 return true;
             }
             return false;//mUser.equals("johnson")&&mPassword.equals("123456");
