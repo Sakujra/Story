@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/z_coordinatorlayout_post"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar_post"
@@ -36,17 +39,53 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ImageView
-            android:id="@+id/z_img_token"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/z_textInputLayout_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </android.support.v4.widget.NestedScrollView>
+            <EditText
+                android:id="@+id/z_input_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="标题" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <EditText
+            android:id="@+id/z_input_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/z_textInputLayout_title"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/z_edit_text_border"
+            android:gravity="left"
+            android:hint="在这里写下此刻心情"
+            android:lineSpacingMultiplier="1.2"
+            android:maxLines="8"
+            android:minLines="8"
+            android:padding="8dp"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/z_btn_post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:height="40dp"
+        android:text="发布" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/z_fab_picture"
