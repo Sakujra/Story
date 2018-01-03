@@ -65,11 +65,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private Button registerButton;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        context=this;
         // Set up the login form.
         mUserNameView = (AutoCompleteTextView) findViewById(R.id.userName);
         populateAutoComplete();
@@ -96,6 +99,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        registerButton=(Button) findViewById(R.id.register_in_button);
+        registerButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context,RegisterActivity.class));
+            }
+        });
     }
 
     private void populateAutoComplete() {
