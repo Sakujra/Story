@@ -9,7 +9,25 @@ public class User {
     private String userPhone;
     private String userName;
     private String userPass;
+    private String userPic;
 
+    public String getUserPic() {
+        return userPic;
+    }
+
+    public void setUserPic(String userPic) {
+        this.userPic = userPic;
+    }
+
+    public String getUserPicEntity() {
+        return userPicEntity;
+    }
+
+    public void setUserPicEntity(String userPicEntity) {
+        this.userPicEntity = userPicEntity;
+    }
+
+    private String userPicEntity;
     public User() {
     }
 
@@ -18,6 +36,7 @@ public class User {
         this.userPhone = userPhone;
         this.userName = userName;
         this.userPass = userPass;
+
     }
 
     public int getUserId() {
