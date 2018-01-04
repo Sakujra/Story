@@ -1,6 +1,7 @@
 package com.vincentlaf.story.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+
 import com.vincentlaf.story.others.CustomViewPager;
 import com.vincentlaf.story.fragment.FragmentTab1;
 import com.vincentlaf.story.fragment.FragmentTab2;
@@ -38,16 +40,24 @@ public class MainActivity extends AppCompatActivity
     private CustomViewPager mViewPager;
     private TabLayout mTabLayout;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);//初始化layout布局文件为可以使用的context对象
-
+        /*findViewById(R.id.button_userPic).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
+        });*/
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mViewPager = (CustomViewPager) findViewById(R.id.z_viewpager_main);
         mTabLayout = (TabLayout) findViewById(R.id.z_tablayout_main);
+
+
 
         mViewPager.setIsScrollable(false);
         //初始化ViewPager
@@ -80,6 +90,7 @@ public class MainActivity extends AppCompatActivity
 
         //请求权限
         askForPermissions();
+
     }
 
     //运行时权限结果处理
@@ -130,7 +141,9 @@ public class MainActivity extends AppCompatActivity
     private void requestLocation() {
 
     }
-
+    public void onClick_userPic() {
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -144,11 +157,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        //初始化menu菜单
         getMenuInflater().inflate(R.menu.main, menu);
+        //为左侧边栏的顶部按钮添加响应事件
+        findViewById(R.id.button_userPic).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
+        });
         return true;
     }
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
@@ -162,7 +183,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
     /*
     左侧边栏drawerLayout的item按钮响应事件
      */
@@ -183,6 +204,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
+            startActivity(new Intent(this, PostActivity.class));
+        }else if (id == R.id.nav_settings) {
+
+        }else if (id == R.id.nav_friend) {
 
         }else if (id==R.id.nav_collection){
             startActivity(new Intent(this, CollectionActivity.class));

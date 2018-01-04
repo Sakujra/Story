@@ -54,10 +54,10 @@
             </intent-filter>
         </activity>
 
-
         <activity
             android:name=".activity.StoryDetailsActivity"
             android:theme="@style/StoryActivityTheme" />
+
         <activity
             android:name=".activity.PostActivity"
             android:theme="@style/StoryActivityTheme" />
@@ -75,7 +75,9 @@
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login" />
+
         <activity android:name=".activity.CollectionActivity" />
+
         <activity android:name=".activity.RegisterActivity"></activity>
     </application>
 
