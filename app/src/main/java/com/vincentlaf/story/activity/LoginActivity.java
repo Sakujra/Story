@@ -1,60 +1,40 @@
 package com.vincentlaf.story.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
-import android.view.KeyEvent;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
+import com.alibaba.fastjson.JSONObject;
 import com.vincentlaf.story.R;
+import com.vincentlaf.story.bean.Method;
 import com.vincentlaf.story.bean.User;
 import com.vincentlaf.story.bean.result.Result;
 import com.vincentlaf.story.exception.WrongRequestException;
 import com.vincentlaf.story.others.App;
-import com.vincentlaf.story.util.ToastUtil;
 import com.vincentlaf.story.util.RequestUtil;
+import com.vincentlaf.story.util.ToastUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
 
+    private AlertDialog mWaitingDlg = null;
+
     private EditText mInputUsername;
 
     private EditText mInputPsw;
 
+    private static final String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,19 +55,72 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.z_btn_login).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUtil.toast("login");
+                if (!checkInput()) return;
+
+                //显示等待对话框
+                if (mWaitingDlg == null) {
+                    mWaitingDlg = new AlertDialog.Builder(LoginActivity.this)
+                            .setView(new ProgressBar(LoginActivity.this))
+                            .setCancelable(false)
+                            .show();
+                    //设置背景透明
+                    mWaitingDlg.getWindow().setBackgroundDrawable(new ColorDrawable());
+                } else {
+                    mWaitingDlg.show();
+                }
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String username = mInputUsername.getText().toString();
+                        String psw = mInputPsw.getText().toString();
+
+                        User user = new User();
+                        user.setUserPhone(username);
+                        user.setUserPass(psw);
+                        try {
+                            Result result = RequestUtil.doPost(RequestUtil.wifiUrl, Method.LOGIN, user);
+                            int code = result.getCode();
+                            if (code == 0) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ToastUtil.toast("登录信息错误");
+
+                                    }
+                                });
+                            } else {
+                                User returnUser = result.getEntityData(User.class);
+                                StringBuilder str = new StringBuilder();
+                                str.append(returnUser.getUserId() + " " + returnUser.getUserName());
+                                App.setUser(returnUser);
+                            }
+                        } catch (WrongRequestException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ToastUtil.toast("网络错误");
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            //关闭等待对话框
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mWaitingDlg.dismiss();
+                                }
+                            });
+                        }
+                    }
+                }).start();
             }
         });
     }
 
-
-    private boolean isUserNameValid(String username) {
-        return username.length() < 13;
+    private boolean checkInput() {
+        return true;
     }
-
-    private boolean isPasswordValid(String password) {
-        return password.length() > 4;
-    }
-
 }
 
