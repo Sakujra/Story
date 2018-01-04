@@ -2,21 +2,18 @@ package com.vincentlaf.story.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.view.View;
-import android.widget.Adapter;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.vincentlaf.story.R;
 import com.vincentlaf.story.adapter.CollectionListAdapter;
-import com.vincentlaf.story.adapter.CommentListAdapter;
 import com.vincentlaf.story.bean.ItemCollection;
-import com.vincentlaf.story.bean.ItemCommentList;
 
 import java.util.ArrayList;
 import java.util.List;

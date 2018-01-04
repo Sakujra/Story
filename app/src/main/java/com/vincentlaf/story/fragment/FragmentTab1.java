@@ -100,8 +100,6 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
         markerCollection.addMarker(30.537615, 114.364066, a);
         //设置自定义窗口
         mAMap.setInfoWindowAdapter(new AMap.InfoWindowAdapter() {
-            View infoWindow = null;
-
             @Override
             public View getInfoWindow(Marker marker) {
                 /*if(infoWindow == null) {
@@ -115,41 +113,46 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
 
             @Override
             public View getInfoContents(Marker marker) {
+//                View infoContent = LayoutInflater.from(getContext()).inflate(
+//                        R.layout.custom_info_contents, null);
                 View infoContent = LayoutInflater.from(getContext()).inflate(
-                        R.layout.custom_info_contents, null);
-                ((ImageView) infoContent.findViewById(R.id.badge))
-                        .setImageResource(R.drawable.badge_sa);
+                        R.layout.z_map_marker_info, null);
+//                ((ImageView) infoContent.findViewById(R.id.badge))
+//                        .setImageResource(R.drawable.badge_sa);
                 render(marker, infoContent);
                 return infoContent;
             }
 
             public void render(Marker marker, View view) {
-                //如果想修改自定义Infow中内容，请通过view找到它并修改
-                String title = marker.getTitle();
-                TextView titleUi = ((TextView) view.findViewById(R.id.title));
-                if (title != null) {
-                    SpannableString titleText = new SpannableString(title);
-                    titleText.setSpan(new ForegroundColorSpan(Color.RED), 0,
-                            titleText.length(), 0);
-                    titleUi.setTextSize(15);
-                    titleUi.setText(titleText);
 
-                } else {
-                    titleUi.setText("");
-                }
-                MarkerInfomation markerInfomation = (MarkerInfomation) marker.getObject();
-                String snippet = markerInfomation.getPlaceName();
-                TextView snippetUi = ((TextView) view.findViewById(R.id.snippet));
-                if (snippet != null) {
-                    SpannableString snippetText = new SpannableString(snippet);
-                    snippetText.setSpan(new ForegroundColorSpan(Color.GREEN), 0,
-                            snippetText.length(), 0);
-                    snippetUi.setTextSize(20);
-                    snippetUi.setText(snippetText);
-                } else {
-                    snippetUi.setText("");
-                }
+                //如果想修改自定义Infow中内容，请通过view找到它并修改
+//                String title = marker.getTitle();
+//                TextView titleUi = ((TextView) view.findViewById(R.id.title));
+//                if (title != null) {
+//                    SpannableString titleText = new SpannableString(title);
+//                    titleText.setSpan(new ForegroundColorSpan(Color.RED), 0,
+//                            titleText.length(), 0);
+//                    titleUi.setTextSize(15);
+//                    titleUi.setText(titleText);
+//
+//                } else {
+//                    titleUi.setText("");
+//                }
+//                MarkerInfomation markerInfomation = (MarkerInfomation) marker.getObject();
+//                String snippet = markerInfomation.getPlaceName();
+//                TextView snippetUi = ((TextView) view.findViewById(R.id.snippet));
+//                if (snippet != null) {
+//                    SpannableString snippetText = new SpannableString(snippet);
+//                    snippetText.setSpan(new ForegroundColorSpan(Color.GREEN), 0,
+//                            snippetText.length(), 0);
+//                    snippetUi.setTextSize(20);
+//                    snippetUi.setText(snippetText);
+//                } else {
+//                    snippetUi.setText("");
+//                }
+
             }
+
         });
         mAMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
             @Override
@@ -158,10 +161,10 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
                 marker.setTitle(marker.getTitle());
                 marker.showInfoWindow();
                 initRecyclerView(view, getAuthorInformationList());
-                searchRouteResult(ROUTE_TYPE_WALK,RouteSearch.WALK_DEFAULT,
-                        new LatLonPoint(mAMap.getMyLocation().getLatitude(),mAMap.getMyLocation().getLongitude()),
-                        new LatLonPoint(marker.getPosition().latitude,marker.getPosition().longitude)
-                );
+//                searchRouteResult(ROUTE_TYPE_WALK,RouteSearch.WALK_DEFAULT,
+//                        new LatLonPoint(mAMap.getMyLocation().getLatitude(),mAMap.getMyLocation().getLongitude()),
+//                        new LatLonPoint(marker.getPosition().latitude,marker.getPosition().longitude)
+//                );
                 return true;
             }
         });
@@ -170,33 +173,32 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
         mAMap.setOnPOIClickListener(new AMap.OnPOIClickListener() {
             @Override
             public void onPOIClick(Poi poi) {
-                markerCollection1.clearAll();
-                markerCollection1.addMarker(poi.getCoordinate().latitude, poi.getCoordinate().longitude, new MarkerInfomation(poi.getName()));
-                Marker marker = (Marker) markerCollection1.getMarkerList().get(0);
-                marker.showInfoWindow();
-                searchRouteResult(ROUTE_TYPE_WALK,RouteSearch.WALK_DEFAULT,
-                        new LatLonPoint(mAMap.getMyLocation().getLatitude(),mAMap.getMyLocation().getLongitude()),
-                        new LatLonPoint(marker.getPosition().latitude,marker.getPosition().longitude)
-                );
+//                markerCollection1.clearAll();
+//                markerCollection1.addMarker(poi.getCoordinate().latitude, poi.getCoordinate().longitude, new MarkerInfomation(poi.getName()));
+//                Marker marker = (Marker) markerCollection1.getMarkerList().get(0);
+//                marker.showInfoWindow();
+//                searchRouteResult(ROUTE_TYPE_WALK,RouteSearch.WALK_DEFAULT,
+//                        new LatLonPoint(mAMap.getMyLocation().getLatitude(),mAMap.getMyLocation().getLongitude()),
+//                        new LatLonPoint(marker.getPosition().latitude,marker.getPosition().longitude)
+//                );
             }
         });
         mAMap.setOnMapClickListener(new AMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                view.findViewById(R.id.z_recyclerview_frag1).setVisibility(View.INVISIBLE);
-                if (markerCollection.getMarkerList().size() > 0) {
-                    for (int i = 0; i < markerCollection.getMarkerList().size(); i++) {
-                        Marker marker = (Marker) markerCollection.getMarkerList().get(i);
-                        marker.hideInfoWindow();
-                    }
-                }
-                if (markerCollection1.getMarkerList().size() > 0) {
-                    for (int i = 0; i < markerCollection1.getMarkerList().size(); i++) {
-                        Marker marker = (Marker) markerCollection1.getMarkerList().get(i);
-                        marker.hideInfoWindow();
-                    }
-                }
-
+//                view.findViewById(R.id.z_recyclerview_frag1).setVisibility(View.INVISIBLE);
+//                if (markerCollection.getMarkerList().size() > 0) {
+//                    for (int i = 0; i < markerCollection.getMarkerList().size(); i++) {
+//                        Marker marker = (Marker) markerCollection.getMarkerList().get(i);
+//                        marker.hideInfoWindow();
+//                    }
+//                }
+//                if (markerCollection1.getMarkerList().size() > 0) {
+//                    for (int i = 0; i < markerCollection1.getMarkerList().size(); i++) {
+//                        Marker marker = (Marker) markerCollection1.getMarkerList().get(i);
+//                        marker.hideInfoWindow();
+//                    }
+//                }
             }
         });
         //步行路线规划
