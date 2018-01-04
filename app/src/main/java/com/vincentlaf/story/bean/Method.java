@@ -13,5 +13,8 @@ public class Method {
     /** 注册*/
     public static final String REGISTER="register";
 
+    /** 发布故事*/
+    public static final String PUBLISH_STORY="publishStory";
+
 
 }
