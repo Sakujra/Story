@@ -65,7 +65,7 @@ public class StoryDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_details);
 
-        mFab = (FloatingActionButton) findViewById(R.id.z_fab_story);
+        //mFab = (FloatingActionButton) findViewById(R.id.z_fab_story);
 
         mTxtBtnLike = (TextView) findViewById(R.id.z_txt_btn_like);
         mTxtBtnComment = (TextView) findViewById(R.id.z_txt_btn_comment);

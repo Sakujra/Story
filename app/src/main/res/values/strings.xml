@@ -1,4 +1,14 @@
 <resources>
+    <!--注释
+    此为文件资源中value值中Strings值储存文件，规定string的name属性的命名规范
+    strings分为两种，一是layout布局strings，作用是构成app界面的辅助说明文字，常常用在menu菜单，button按钮等中，命名规范为“布局名称_所描述控件名称_自定义名称”
+                        第一个分量用于确定string使用的文件位置，第二个分量继续细化确定该位置，第三个分量由开发者自定义以区分该位置下的不同的string
+                       例子：一个在drawerLayout布局中menu控件下的手机号字符串可以命名name属性为drawerLayout_menu_phone
+                    二是prompt提示strings，作用是app在与用户交互的时候所反馈的提示信息，常常以提示框的形式出现，命名规范为prompt所在的activity活动名称或者fragment碎片+
+                    提示所属的功能区+用户自定义。“活动名称_实现的功能_自定义名称”或者“碎片名称_实现的功能_自定义名称”
+                    例子：一个在loginAntivity活动中实现登陆功能反馈错误信息的字符串可以命名name属性为loginAntivity_login_error
+      规范并不完整，欢迎补充和修改
+    -->
     <string name="app_name">Story</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -19,6 +29,17 @@
     <string name="error_incorrect_password">密码错误</string>
     <string name="error_field_required">该字段不能为空</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+        completions."</string>
+
+    <!-- Strings related to menu/与菜单条目有关的String -->
+    <string name="drawerLayout_menu_import">导入</string>
+    <string name="drawerLayout_menu_Gallery">画廊</string>
+    <string name="drawerLayout_menu_slideshow">幻灯片</string>
+    <string name="drawerLayout_menu_tools">工具</string>
+    <string name="drawerLayout_menu_collection">收藏</string>
+    <string name="drawerLayout_menu_send">发送</string>
+    <string name="drawerLayout_menu_friend">朋友</string>
+    <string name="drawerLayout_menu_share">分享</string>
+    <string name="drawerLayout_menu_setting">设置</string>
+
 </resources>
