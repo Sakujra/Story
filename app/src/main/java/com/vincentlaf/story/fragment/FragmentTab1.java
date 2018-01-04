@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.BitmapDescriptor;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
@@ -36,6 +38,7 @@ import com.vincentlaf.story.others.AuthorAdapter;
 import com.vincentlaf.story.others.AuthorInformation;
 import com.vincentlaf.story.others.MarkerCollection;
 import com.vincentlaf.story.others.MarkerInfomation;
+import com.vincentlaf.story.util.MarkerUtil;
 import com.vincentlaf.story.util.ToastUtil;
 import com.vincentlaf.story.others.WalkRouteOverlay;
 
@@ -50,8 +53,8 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
 
     private MapView mMapView;
     private AMap mAMap;
-
     private WalkRouteResult mWalkRouteResult;
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -92,8 +95,9 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
         //向服务器请求数据后添加Marker
         final MarkerCollection markerCollection = new MarkerCollection(mAMap);
         Object a = new MarkerInfomation("a");
-        markerCollection.addMarker(30.537615, 114.364966, a);
-        markerCollection.addMarker(30.537615, 114.364066, a);
+        markerCollection.addMarkerWithGrowAnimation(30.537615, 114.364966, a);
+        markerCollection.addMarkerWithGrowAnimation(30.537615, 114.364066, a);
+        markerCollection.addMarkerWithGrowAnimation(30.537615, 114.363066, a);
         //设置自定义窗口
         mAMap.setInfoWindowAdapter(new AMap.InfoWindowAdapter() {
             @Override
@@ -151,16 +155,25 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
 
         });
         mAMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
+
             @Override
             public boolean onMarkerClick(Marker marker) {
+
+
+
+               for (int i = 0; i <markerCollection.getMarkerList().size() ; i++) {
+                    markerCollection.setMarkerIcon((Marker)markerCollection.getMarkerList().get(i),MarkerUtil.getMarkerNormalBitmap());
+                }
+                markerCollection.setMarkerIcon(marker,MarkerUtil.getMarkerActiveBitmap());
                 Toast.makeText(getContext(), "您点击了Marker", Toast.LENGTH_LONG).show();
-                marker.setTitle(marker.getTitle());
+                marker.startAnimation();
                 marker.showInfoWindow();
                 initRecyclerView(view, getAuthorInformationList());
 //                searchRouteResult(ROUTE_TYPE_WALK,RouteSearch.WALK_DEFAULT,
 //                        new LatLonPoint(mAMap.getMyLocation().getLatitude(),mAMap.getMyLocation().getLongitude()),
 //                        new LatLonPoint(marker.getPosition().latitude,marker.getPosition().longitude)
 //                );
+
                 return true;
             }
         });
