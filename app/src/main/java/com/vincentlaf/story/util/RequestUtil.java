@@ -8,6 +8,7 @@ import com.vincentlaf.story.bean.result.Result;
 import com.vincentlaf.story.exception.WrongRequestException;
 
 import java.io.IOException;
+import java.net.ConnectException;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -36,7 +37,7 @@ public class RequestUtil {
      * @param params json 参数列表
      * @return {@link JSONObject} 回传参数
      */
-    public static @Nullable
+    private static @Nullable
     Result doPost(String url,String method, JSONObject params) throws IOException, WrongRequestException {
         OkHttpClient client=new OkHttpClient();
         MediaType jsonType=MediaType.parse("application/json;charset=UTF-8");
@@ -53,6 +54,16 @@ public class RequestUtil {
         JSONObject jsonObject=JSONObject.parseObject(responseBody.string());
         return new Result(jsonObject.getJSONObject("data"),jsonObject.getJSONObject("result"));
     }
+
+    /**
+     * POST 请求
+     * @param url 主机位置 包含在当前类中
+     * @param method  请求方法，包含 {@link com.vincentlaf.story.bean.Method} 中
+     * @param params  请求参数对象，除登录注册外，所有参数都必须继承于{@link com.vincentlaf.story.bean.param.BasicParam}
+     * @return {@link Result} data可能包含{@link com.vincentlaf.story.bean.result.QueryResult} 或者 netbean包下的实体类
+     * @throws IOException  网络错误时抛出
+     * @throws WrongRequestException 请求错误时抛出
+     */
     public static @Nullable
     Result doPost(String url, String method, Object params) throws IOException, WrongRequestException {
         OkHttpClient client=new OkHttpClient();

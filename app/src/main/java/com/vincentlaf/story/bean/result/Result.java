@@ -8,11 +8,14 @@ import java.util.ArrayList;
 
 /**
  * Created by Johnson on 2018/1/3.
+ * 网络请求结果
  */
 
 public class Result extends JSONObject {
 
+    /** 包含信息*/
     private JSONObject data;
+    /** 包含请求状态码及msg*/
     private JSONObject result;
     public Result(JSONObject data,JSONObject result){
         this.data=data;
@@ -26,9 +29,23 @@ public class Result extends JSONObject {
     public int getCode(){
         return result.getInteger("code");
     }
+
+    /**
+     * 获取结果集中的实体类对象
+     * @param tClass 实体类对象类型
+     * @param <T> 泛型
+     * @return {@link T}
+     */
     public <T> T getEntityData(Class<T> tClass){
         return data.getObject("data",tClass);
     }
+
+    /**
+     * 获取结果集中的list对象
+     * @param tClass list对象包含的对象类型
+     * @param <T> 泛型
+     * @return {@link QueryResult<T>} 结果集
+     */
     public <T> QueryResult<T> getList(Class<T> tClass){
         QueryResult<T> result=new QueryResult<>();
         JSONObject queryResult=data.getJSONObject("data");

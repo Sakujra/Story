@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * Created by Johnson on 2018/1/3.
+ * 查询列表返回的data对象
  */
 
 public class QueryResult<T> {

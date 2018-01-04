@@ -2,6 +2,7 @@ package com.vincentlaf.story.bean.param;
 
 /**
  * Created by Johnson on 2018/1/3.
+ * 带页数的参数
  */
 
 public class QueryListParam extends BasicParam {

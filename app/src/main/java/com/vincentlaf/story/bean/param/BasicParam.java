@@ -2,6 +2,7 @@ package com.vincentlaf.story.bean.param;
 
 /**
  * Created by Johnson on 2018/1/3.
+ * 基础参数 当前位置的经纬度
  */
 
 public class BasicParam {

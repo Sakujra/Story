@@ -5,6 +5,7 @@ import com.vincentlaf.story.bean.Method;
 import com.vincentlaf.story.bean.User;
 import com.vincentlaf.story.bean.netbean.StoryListInfo;
 import com.vincentlaf.story.bean.param.BasicParam;
+import com.vincentlaf.story.bean.param.FullStoryParam;
 import com.vincentlaf.story.bean.param.QueryListParam;
 import com.vincentlaf.story.bean.result.QueryResult;
 import com.vincentlaf.story.bean.result.Result;
@@ -67,5 +68,14 @@ public class ExampleUnitTest extends TestCase{
         user.setUserPicEntity(StringUtil.file2String(new File("C:\\Users\\Johnson\\Desktop\\1.jpg")));
         Result result = RequestUtil.doPost(RequestUtil.testUrl,Method.REGISTER,user);
         System.out.println(result);
+    }
+
+    public void testPublish() throws IOException, WrongRequestException {
+        FullStoryParam param=new FullStoryParam();
+        param.setUid(1);
+        param.setContent("title","content",StringUtil.file2String(new File("C:\\Users\\Johnson\\Desktop\\1.jpg")));
+        param.setPlace(23.264686,98.568451,"placeName");
+        Result result=RequestUtil.doPost(RequestUtil.testUrl,Method.PUBLISH_STORY,param);
+        System.out.println(result.toString());
     }
 }
