@@ -10,6 +10,7 @@ public class Method {
     /** 查看所有story*/
     public static final String FIND_STORIES="findStories";
 
+    /** 注册*/
     public static final String REGISTER="register";
 
 
