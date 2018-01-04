@@ -8,6 +8,7 @@ import com.vincentlaf.story.bean.result.Result;
 import com.vincentlaf.story.exception.WrongRequestException;
 
 import java.io.IOException;
+import java.net.ConnectException;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
