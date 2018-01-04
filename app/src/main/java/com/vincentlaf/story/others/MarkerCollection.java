@@ -1,8 +1,10 @@
 package com.vincentlaf.story.others;
 
-import android.app.Activity;
-import android.content.Context;
-import android.widget.Toast;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
@@ -10,6 +12,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.vincentlaf.story.R;
+import com.vincentlaf.story.util.MarkerUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +59,9 @@ public class MarkerCollection {
      */
     public void addMarker(double x, double y, Object information) {
         LatLng latLng = new LatLng(x, y);
-        MarkerOptions markerOption = new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+        MarkerOptions markerOption = new MarkerOptions()
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                .icon(BitmapDescriptorFactory.fromBitmap(MarkerUtil.getMarkerNormalBitmap()))
                 .position(latLng)
                 .title(latLng.toString())
                 .snippet("aa")

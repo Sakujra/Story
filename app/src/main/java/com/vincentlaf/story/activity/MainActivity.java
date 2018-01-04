@@ -28,7 +28,6 @@ import com.vincentlaf.story.others.CustomViewPager;
 import com.vincentlaf.story.fragment.FragmentTab1;
 import com.vincentlaf.story.fragment.FragmentTab2;
 import com.vincentlaf.story.R;
-import com.vincentlaf.story.others.ToastUtil;
 
 import java.util.ArrayList;
 

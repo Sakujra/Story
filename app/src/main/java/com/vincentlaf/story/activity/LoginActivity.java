@@ -32,14 +32,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.vincentlaf.story.R;
 import com.vincentlaf.story.bean.User;
 import com.vincentlaf.story.bean.result.Result;
 import com.vincentlaf.story.exception.WrongRequestException;
 import com.vincentlaf.story.others.App;
-import com.vincentlaf.story.others.ToastUtil;
+import com.vincentlaf.story.util.ToastUtil;
 import com.vincentlaf.story.util.RequestUtil;
 
 import java.io.IOException;

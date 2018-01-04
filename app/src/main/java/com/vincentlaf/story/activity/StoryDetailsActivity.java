@@ -1,13 +1,9 @@
 package com.vincentlaf.story.activity;
 
-import android.Manifest;
 import android.app.Dialog;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,14 +19,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.vincentlaf.story.R;
 import com.vincentlaf.story.adapter.CommentListAdapter;
 import com.vincentlaf.story.bean.ItemCommentList;
-import com.vincentlaf.story.others.ToastUtil;
+import com.vincentlaf.story.util.ToastUtil;
 
 import java.util.ArrayList;
 

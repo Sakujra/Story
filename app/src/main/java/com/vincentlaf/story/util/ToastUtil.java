@@ -1,6 +1,8 @@
-package com.vincentlaf.story.others;
+package com.vincentlaf.story.util;
 
 import android.widget.Toast;
+
+import com.vincentlaf.story.others.App;
 
 /**
  * Created by VincentLaf on 2017/12/29.

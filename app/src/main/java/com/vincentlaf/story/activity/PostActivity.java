@@ -37,7 +37,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.vincentlaf.story.R;
-import com.vincentlaf.story.others.ToastUtil;
+import com.vincentlaf.story.util.ToastUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;

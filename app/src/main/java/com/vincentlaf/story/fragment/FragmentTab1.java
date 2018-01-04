@@ -1,7 +1,5 @@
 package com.vincentlaf.story.fragment;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,26 +8,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Poi;
 import com.amap.api.services.core.AMapException;
@@ -46,7 +36,7 @@ import com.vincentlaf.story.others.AuthorAdapter;
 import com.vincentlaf.story.others.AuthorInformation;
 import com.vincentlaf.story.others.MarkerCollection;
 import com.vincentlaf.story.others.MarkerInfomation;
-import com.vincentlaf.story.others.ToastUtil;
+import com.vincentlaf.story.util.ToastUtil;
 import com.vincentlaf.story.others.WalkRouteOverlay;
 
 import java.util.ArrayList;
@@ -62,6 +52,12 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
     private AMap mAMap;
 
     private WalkRouteResult mWalkRouteResult;
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
     private final int ROUTE_TYPE_BUS = 1;
     private final int ROUTE_TYPE_DRIVE = 2;
     private final int ROUTE_TYPE_WALK = 3;
@@ -116,7 +112,7 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
 //                View infoContent = LayoutInflater.from(getContext()).inflate(
 //                        R.layout.custom_info_contents, null);
                 View infoContent = LayoutInflater.from(getContext()).inflate(
-                        R.layout.z_map_marker_info, null);
+                        R.layout.z_map_marker_active, null);
 //                ((ImageView) infoContent.findViewById(R.id.badge))
 //                        .setImageResource(R.drawable.badge_sa);
                 render(marker, infoContent);
@@ -282,19 +278,20 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
         });
 
     }
+
     /**
      * 开始搜索路径规划方案
      */
-    public void searchRouteResult(int routeType, int mode,LatLonPoint mStartPoint,LatLonPoint mEndPoint) {
-        if(mStartPoint.getLatitude()==0.0){
-            mStartPoint=new LatLonPoint(114.364015,30.534631);
+    public void searchRouteResult(int routeType, int mode, LatLonPoint mStartPoint, LatLonPoint mEndPoint) {
+        if (mStartPoint.getLatitude() == 0.0) {
+            mStartPoint = new LatLonPoint(114.364015, 30.534631);
         }
         if (mStartPoint == null) {
-            ToastUtil.toast( "起点未设置");
+            ToastUtil.toast("起点未设置");
             return;
         }
         if (mEndPoint == null) {
-            ToastUtil.toast( "终点未设置");
+            ToastUtil.toast("终点未设置");
         }
         //showProgressDialog();
         final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(
@@ -396,10 +393,11 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
                 }
 
             } else {
-                ToastUtil.toast("GG");;
+                ToastUtil.toast("GG");
+                ;
             }
         } else {
-            ToastUtil.toast("错误代码"+errorCode);
+            ToastUtil.toast("错误代码" + errorCode);
         }
     }
 
@@ -407,4 +405,6 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
     public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
 
     }
+
+
 }

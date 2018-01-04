@@ -3,8 +3,6 @@ package com.vincentlaf.story.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.UiThread;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,14 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.vincentlaf.story.R;
 import com.vincentlaf.story.activity.StoryDetailsActivity;
 import com.vincentlaf.story.adapter.StoryListAdapter;
 import com.vincentlaf.story.bean.ItemStoryList;
-import com.vincentlaf.story.others.ToastUtil;
+import com.vincentlaf.story.util.ToastUtil;
 
 import java.util.ArrayList;
 
