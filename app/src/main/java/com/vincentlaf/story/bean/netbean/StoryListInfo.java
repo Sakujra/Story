@@ -5,6 +5,7 @@ import java.util.Date;
 /**
  * Created by Johnson on 2018/1/3.
  * storyList 返回结果实体类
+ * 查询附件故事用
  */
 
 public class StoryListInfo {

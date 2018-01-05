@@ -26,6 +26,7 @@
             android:textStyle="bold" />
 
         <EditText
+            android:id="@+id/z_input_register_username"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/z_login_input_bg"
@@ -42,6 +43,7 @@
             android:textStyle="bold" />
 
         <EditText
+            android:id="@+id/z_input_register_psw"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/z_login_input_bg"
@@ -58,6 +60,7 @@
             android:textStyle="bold" />
 
         <EditText
+            android:id="@+id/z_input_register_nickname"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginBottom="40dp"
@@ -78,7 +81,7 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/z_btn_login"
+        android:id="@+id/z_btn_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/z_linearlayout_login_input"
@@ -93,9 +96,11 @@
         android:textStyle="bold" />
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/z_img_register_headimg"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/z_ripple"
         android:src="@drawable/avatar_1"
         app:civ_border_color="@color/z_login_foreground"
         app:civ_border_width="1.5dp" />

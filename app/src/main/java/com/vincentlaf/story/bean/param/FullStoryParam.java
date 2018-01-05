@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * Created by Johnson on 2018/1/4.
+ * 发布故事用
  */
 
 public class FullStoryParam extends BasicParam {
