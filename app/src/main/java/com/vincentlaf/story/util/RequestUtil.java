@@ -29,7 +29,7 @@ public class RequestUtil {
 
     //192.168.1.100 wifi地址
     public static final String wifiUrl = "http://192.168.1.101/story/%s.do";
-    public static final String headimage = "http://192.168.1.100/story/head/%s.jpg";
+    public static final String headimage = "http://192.168.1.101/story/images/head/%s";
     public static final String monitorUrl = "http://10.0.2.2/story/%s.do";
     public static final String testUrl = "http://127.0.0.1/story/%s.do";
 
@@ -95,10 +95,10 @@ public class RequestUtil {
     /**
      * 拼接头像地址
      *
-     * @param userPhone 用户手机号
+     * @param userPic 用户pic
      * @return http地址
      */
-    public static String getHeadImage(String userPhone) {
-        return String.format(headimage, userPhone);
+    public static String getHeadImage(String userPic) {
+        return String.format(headimage, userPic);
     }
 }

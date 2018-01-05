@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,15 +25,30 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.vincentlaf.story.bean.Method;
+import com.vincentlaf.story.bean.netbean.StoryListInfo;
+import com.vincentlaf.story.bean.param.QueryListParam;
+import com.vincentlaf.story.bean.result.QueryResult;
+import com.vincentlaf.story.bean.result.Result;
+import com.vincentlaf.story.exception.WrongRequestException;
+import com.vincentlaf.story.others.App;
 import com.vincentlaf.story.others.CustomViewPager;
 import com.vincentlaf.story.fragment.FragmentTab1;
 import com.vincentlaf.story.fragment.FragmentTab2;
 import com.vincentlaf.story.R;
+import com.vincentlaf.story.util.RequestUtil;
+import com.vincentlaf.story.util.ToastUtil;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    public ArrayList<StoryListInfo> mItemList = new ArrayList<>();
+
+    private boolean hasNextPage = true;
+    private int nextPage = 1;
+    private static final String TAG = "MainActivity";
 
     private CustomViewPager mViewPager;
     private TabLayout mTabLayout;
@@ -49,6 +65,7 @@ public class MainActivity extends AppCompatActivity
         mTabLayout = (TabLayout) findViewById(R.id.z_tablayout_main);
         mNaviView = (NavigationView) findViewById(R.id.nav_view);
 
+        //取消左右手势
         mViewPager.setIsScrollable(false);
         //初始化ViewPager
         mViewPager.setAdapter(
@@ -79,6 +96,93 @@ public class MainActivity extends AppCompatActivity
 
         //请求权限
         askForPermissions();
+    }
+
+    //加载数据
+    public void loadData(boolean isRefresh) {
+        if (isRefresh) {
+            nextPage = 1;
+            loadDataOnPage(nextPage);
+        } else {
+            if (hasNextPage) {
+                loadDataOnPage(nextPage);
+            }
+        }
+    }
+
+    //按页码加载数据
+    private void loadDataOnPage(int page) {
+        nextPage = page;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                QueryListParam param = new QueryListParam();
+                param.setLon(App.getLon());
+                param.setLat(App.getLat());
+                param.setPage(nextPage);
+                try {
+                    Result result = RequestUtil.doPost(RequestUtil.wifiUrl, Method.FIND_STORIES, param);
+                    int code = result.getCode();
+                    //加载错误
+                    if (code == 0) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                MainPagerAdapter adapter = (MainPagerAdapter) mViewPager.getAdapter();
+                                adapter.frag2LoadMoreFail();
+                                ToastUtil.toast("加载失败");
+                            }
+                        });
+                    } else {
+                        //加载成功
+                        QueryResult<StoryListInfo> infos = result.getList(StoryListInfo.class);
+                        hasNextPage = infos.isHasNext();
+                        if (nextPage == 1) {
+                            mItemList.clear();
+                        }
+                        mItemList.addAll(infos.getRows());
+                        //下次请求下一页
+                        nextPage++;
+                        Log.d(TAG, "run: " + mItemList.get(0).getContent());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                MainPagerAdapter adapter = (MainPagerAdapter) mViewPager.getAdapter();
+                                //没有下一页
+                                if (!hasNextPage) {
+                                    adapter.frag2LoadMoreEnd();
+                                    ToastUtil.toast("全部加载");
+                                } else {
+                                    //还有下一页
+                                    adapter.frag2LoadMoreComplete();
+                                    ToastUtil.toast("加载成功");
+                                }
+                            }
+                        });
+                    }
+                } catch (WrongRequestException e) {
+                    //网络错误
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MainPagerAdapter adapter = (MainPagerAdapter) mViewPager.getAdapter();
+                            adapter.frag2LoadMoreFail();
+                            ToastUtil.toast("网络错误");
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MainPagerAdapter adapter = (MainPagerAdapter) mViewPager.getAdapter();
+                            adapter.frag2SetIsRefreshing(false);
+                        }
+                    });
+                }
+            }
+        }).start();
     }
 
     //运行时权限结果处理
@@ -194,6 +298,8 @@ public class MainActivity extends AppCompatActivity
 
 class MainPagerAdapter extends FragmentPagerAdapter {
 
+    private FragmentTab2 mFragmentTab2 = null;
+
     private FragmentManager mFragmentManager;
 
     private ArrayList<Fragment> mFragmentList = new ArrayList<>();
@@ -222,8 +328,27 @@ class MainPagerAdapter extends FragmentPagerAdapter {
     }
 
     public MainPagerAdapter addFragment(Fragment fragment, String title) {
+        if (fragment instanceof FragmentTab2) {
+            mFragmentTab2 = (FragmentTab2) fragment;
+        }
         mFragmentList.add(fragment);
         mTitleList.add(title);
         return this;
+    }
+
+    public void frag2LoadMoreEnd() {
+        mFragmentTab2.loadMoreEnd();
+    }
+
+    public void frag2LoadMoreComplete() {
+        mFragmentTab2.loadMoreComplete();
+    }
+
+    public void frag2LoadMoreFail() {
+        mFragmentTab2.loadMoreFail();
+    }
+
+    public void frag2SetIsRefreshing(boolean b) {
+        mFragmentTab2.setIsRefreshing(b);
     }
 }
