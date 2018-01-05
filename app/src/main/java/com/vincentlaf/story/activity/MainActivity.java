@@ -211,7 +211,7 @@ public class MainActivity extends  AppCompatActivity
     }
 }
 
-class MainPagerAdapter extends FragmentPagerAdapter {
+class MainPagerAdapter extends  FragmentPagerAdapter {
 
     private FragmentManager mFragmentManager;
 
