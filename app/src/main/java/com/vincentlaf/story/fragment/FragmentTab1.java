@@ -1,5 +1,7 @@
 package com.vincentlaf.story.fragment;
 
+import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
@@ -54,6 +57,9 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
     private MapView mMapView;
     private AMap mAMap;
     private WalkRouteResult mWalkRouteResult;
+    private Marker currentMarker = null;
+    private View allView;
+    private WalkRouteOverlay currentWRL = null;
 
 
     @Override
@@ -75,8 +81,8 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
         return view;
     }
 
-
     private void initview(Bundle savedInstanceState, final View view) {
+        allView = view;
         mMapView = view.findViewById(R.id.z_map);
         mMapView.onCreate(savedInstanceState);
         if (mAMap == null) {
@@ -159,6 +165,7 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
             @Override
             public boolean onMarkerClick(Marker marker) {
 
+                currentMarker = marker;
                 for (int i = 0; i < markerCollection.getMarkerList().size(); i++) {
                     markerCollection.setMarkerIcon((Marker) markerCollection.getMarkerList().get(i), MarkerUtil.getMarkerNormalBitmap());
                 }
@@ -209,6 +216,37 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
             }
         });
         //步行路线规划
+//        final Button button = view.findViewById(R.id.navigation_button);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            boolean isSelected = false;
+//
+//            @SuppressLint("ResourceType")
+//            @Override
+//            public void onClick(View view) {
+//                if (currentMarker != null) {
+//                    if (!isSelected) {
+//                        button.setBackgroundResource(R.drawable.z_item_storylist_bg_press);
+//                        searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WALK_DEFAULT,
+//                                new LatLonPoint(mAMap.getMyLocation().getLatitude(), mAMap.getMyLocation().getLongitude()),
+//                                new LatLonPoint(currentMarker.getPosition().latitude, currentMarker.getPosition().longitude)
+//                        );
+//                        isSelected = true;
+//                    } else {
+//                        isSelected = false;
+//                        button.setBackgroundResource(R.drawable.z_item_storylist_bg_normal);
+//                        if (currentWRL != null) {
+//                            currentWRL.removeFromMap();
+//                        }
+//                    }
+//
+//                } else {
+//                    ToastUtil.toast("没有选中目的地");
+//                }
+//
+//            }
+//        });
+
+
         mRouteSearch = new RouteSearch(getContext());
         mRouteSearch.setRouteSearchListener(this);
     }
@@ -369,7 +407,7 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
     @Override
     public void onWalkRouteSearched(WalkRouteResult result, int errorCode) {
         if (errorCode == AMapException.CODE_AMAP_SUCCESS) {
-            mAMap.clear();
+            // mAMap.clear();
             if (result != null && result.getPaths() != null) {
                 if (result.getPaths().size() > 0) {
                     mWalkRouteResult = result;
@@ -382,23 +420,7 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
                     walkRouteOverlay.removeFromMap();
                     walkRouteOverlay.addToMap();
                     walkRouteOverlay.zoomToSpan();
-                    /*mBottomLayout.setVisibility(View.VISIBLE);
-                    int dis = (int) walkPath.getDistance();
-                    int dur = (int) walkPath.getDuration();
-                    String des = AMapUtil.getFriendlyTime(dur)+"("+AMapUtil.getFriendlyLength(dis)+")";
-                    mRotueTimeDes.setText(des);
-                    mRouteDetailDes.setVisibility(View.GONE);
-                    mBottomLayout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(mContext,
-                                    WalkRouteDetailActivity.class);
-                            intent.putExtra("walk_path", walkPath);
-                            intent.putExtra("walk_result",
-                                    mWalkRouteResult);
-                            startActivity(intent);
-                        }
-                    });*/
+                    currentWRL = walkRouteOverlay;
                 } else if (result != null && result.getPaths() == null) {
                     ToastUtil.toast("GG");
                 }

@@ -105,7 +105,7 @@ public class FragmentTab2 extends Fragment {
                     param.setLat(App.getLat());
                     param.setPage(nextPage);
                     try {
-                        Result result = RequestUtil.doPost(RequestUtil.wifiUrl, Method.FIND_STORIES, param);
+                        Result result = RequestUtil.doPost(RequestUtil.monitorUrl, Method.FIND_STORIES, param);
                         int code = result.getCode();
                         Log.d(TAG, "run: " + result.toString());
                         if (code == 0) {

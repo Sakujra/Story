@@ -8,10 +8,89 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/z_recyclerview_frag1"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_gravity="bottom" />
+        android:layout_gravity="bottom"
+        android:visibility="gone" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <LinearLayout
+            android:id="@+id/z_linearlayout_map_info_base"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/z_linearlayout_map_info_base"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="-16dp"
+            android:background="@drawable/z_map_info_center_bg"
+            android:padding="5dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/avatar_1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:text="Alex Boyd"
+                android:textColor="@color/white_child" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_above="@+id/z_linearlayout_map_info_base"
+            android:layout_marginBottom="-16dp"
+            android:layout_marginLeft="-20dp"
+            android:background="@drawable/z_map_info_sidebar_bg"
+            android:gravity="right"
+            android:padding="5dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/avatar_1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/z_linearlayout_map_info_base"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="-16dp"
+            android:layout_marginRight="-20dp"
+            android:background="@drawable/z_map_info_sidebar_bg"
+            android:padding="5dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/avatar_1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="POST" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
