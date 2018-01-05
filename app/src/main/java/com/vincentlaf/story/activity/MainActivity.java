@@ -261,7 +261,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_post:
                 startActivity(new Intent(this, PostActivity.class));
                 break;
-
             default:
         }
 
