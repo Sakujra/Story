@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity
 
     private CustomViewPager mViewPager;
     private TabLayout mTabLayout;
+    private NavigationView mNaviView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity
 
         mViewPager = (CustomViewPager) findViewById(R.id.z_viewpager_main);
         mTabLayout = (TabLayout) findViewById(R.id.z_tablayout_main);
+        mNaviView = (NavigationView) findViewById(R.id.nav_view);
 
         mViewPager.setIsScrollable(false);
         //初始化ViewPager
@@ -150,7 +152,7 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.action_settings:
                 //Toast.makeText(this, "settings 尚未实现", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this,LoginActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.action_post:
                 startActivity(new Intent(this, PostActivity.class));
@@ -180,7 +182,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
-        }else if (id==R.id.nav_collection){
+        } else if (id == R.id.nav_collection) {
             startActivity(new Intent(this, CollectionActivity.class));
         }
 

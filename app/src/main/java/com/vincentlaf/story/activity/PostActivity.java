@@ -10,6 +10,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
@@ -20,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,15 +36,25 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.vincentlaf.story.R;
+import com.vincentlaf.story.bean.Method;
+import com.vincentlaf.story.bean.User;
+import com.vincentlaf.story.bean.param.FullStoryParam;
+import com.vincentlaf.story.bean.result.Result;
+import com.vincentlaf.story.exception.WrongRequestException;
+import com.vincentlaf.story.others.App;
+import com.vincentlaf.story.util.RequestUtil;
+import com.vincentlaf.story.util.StringUtil;
 import com.vincentlaf.story.util.ToastUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -52,6 +65,9 @@ public class PostActivity extends AppCompatActivity {
     private ImageView mImageView;
     private Dialog mDialog;
     private EditText mInputContent;
+    private EditText mInputTitle;
+
+    private AlertDialog mWaitingDlg = null;
 
     private String mImgUrl = "https://cn.bing.com/az/hprichbg/rb/PineZion_ZH-CN13789067332_1920x1080.jpg";
 
@@ -63,9 +79,10 @@ public class PostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post);
 
         mInputContent = (EditText) findViewById(R.id.z_input_content);
+        mInputTitle = (EditText) findViewById(R.id.z_input_title);
 
         mImageView = (ImageView) findViewById(R.id.z_imageview_post);
-        Glide.with(this).load(mImgUrl).into(mImageView);
+        // Glide.with(this).load(mImgUrl).into(mImageView);
 
         setupBottomDialog();
 
@@ -78,6 +95,88 @@ public class PostActivity extends AppCompatActivity {
                 mDialog.show();//显示对话框
             }
         });
+
+        findViewById(R.id.z_btn_post).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (!checkInput()) return;
+
+                //显示等待对话框
+                if (mWaitingDlg == null) {
+                    mWaitingDlg = new AlertDialog.Builder(PostActivity.this)
+                            .setView(new ProgressBar(PostActivity.this))
+                            .setCancelable(false)
+                            .show();
+                    //设置背景透明
+                    mWaitingDlg.getWindow().setBackgroundDrawable(new ColorDrawable());
+                } else {
+                    mWaitingDlg.show();
+                }
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String title = mInputTitle.getText().toString();
+                        String content = mInputContent.getText().toString();
+
+                        Bitmap bmp = ((BitmapDrawable) mImageView.getDrawable()).getBitmap();
+                        byte[] bytes = StringUtil.bitmap2Bytes(bmp);
+                        String img = "";
+                        try {
+                            img = StringUtil.byteArray2String(bytes);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+
+                        FullStoryParam param = new FullStoryParam();
+                        param.setUid(App.getUser().getUserId());
+                        param.setContent(title, content, img);
+                        param.setPlace(23.264686, 98.568451, "placeName");
+                        try {
+                            Result result = RequestUtil.doPost(RequestUtil.wifiUrl, Method.PUBLISH_STORY, param);
+                            int code = result.getCode();
+                            if (code == 0) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ToastUtil.toast("发布错误");
+                                    }
+                                });
+                            } else {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ToastUtil.toast("发布成功");
+                                    }
+                                });
+                            }
+                        } catch (WrongRequestException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ToastUtil.toast("网络错误");
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            //关闭等待对话框
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mWaitingDlg.dismiss();
+                                }
+                            });
+                        }
+                    }
+                }).start();
+            }
+        });
+    }
+
+    private boolean checkInput() {
+        return true;
     }
 
     private void initInputContent() {

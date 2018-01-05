@@ -29,7 +29,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.vincentlaf.story.R;
@@ -42,7 +41,6 @@ import com.vincentlaf.story.util.RequestUtil;
 import com.vincentlaf.story.util.StringUtil;
 import com.vincentlaf.story.util.ToastUtil;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -108,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
                         String psw = mInputPsw.getText().toString();
                         String nickname = mInputNickname.getText().toString();
                         Bitmap bmp = ((BitmapDrawable) mImageView.getDrawable()).getBitmap();
-                        byte[] bytes = RegisterActivity.this.bitmap2Bytes(bmp);
+                        byte[] bytes = StringUtil.bitmap2Bytes(bmp);
                         String img = "";
                         try {
                             img = StringUtil.byteArray2String(bytes);
@@ -162,12 +160,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    //将bitmap转为流
-    public byte[] bitmap2Bytes(Bitmap bm) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        return baos.toByteArray();
-    }
+
 
     private boolean checkInput() {
         return true;

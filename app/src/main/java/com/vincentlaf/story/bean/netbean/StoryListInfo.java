@@ -16,39 +16,51 @@ public class StoryListInfo {
     private String userPic;
     private Double distance;
     private Date date;
+
     public String getUserName() {
         return userName;
     }
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
+
     public String getContent() {
         return content;
     }
+
     public void setContent(String content) {
         this.content = content;
     }
+
     public String getUserPic() {
         return userPic;
     }
+
     public void setUserPic(String userPic) {
         this.userPic = userPic;
     }
+
     public Double getDistance() {
         return distance;
     }
+
     public void setDistance(Double distance) {
         this.distance = distance;
     }
+
     public Date getDate() {
         return date;
     }
+
     public void setDate(Date date) {
         this.date = date;
     }

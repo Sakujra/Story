@@ -12,12 +12,12 @@ import com.vincentlaf.story.bean.User;
 public class App extends Application {
     private static User user;
     private static Context mContext;
-
-
+    private static Double lon = 23.4646621;
+    private static Double lat = 95.1646562;
 
     @Override
     public void onCreate() {
-        user=null;
+        user = null;
         super.onCreate();
         mContext = getApplicationContext();
     }
@@ -33,5 +33,13 @@ public class App extends Application {
 
     public static void setUser(User user) {
         App.user = user;
+    }
+
+    public static Double getLon() {
+        return lon;
+    }
+
+    public static Double getLat() {
+        return lat;
     }
 }

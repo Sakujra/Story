@@ -1,5 +1,7 @@
 package com.vincentlaf.story.util;
 
+import android.graphics.Bitmap;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -93,5 +95,13 @@ public class StringUtil {
         fout.write(data);
         fout.flush();
         fout.close();
+    }
+
+
+    //将bitmap转为流
+    public static byte[] bitmap2Bytes(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        return baos.toByteArray();
     }
 }

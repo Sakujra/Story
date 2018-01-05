@@ -28,14 +28,13 @@ public class RequestUtil {
     private static final String TAG = "RequestUtil";
 
     //192.168.1.100 wifi地址
-    public static final String wifiUrl = "http://192.168.1.100/story/%s.do";
+    public static final String wifiUrl = "http://192.168.1.101/story/%s.do";
     public static final String headimage = "http://192.168.1.100/story/head/%s.jpg";
     public static final String monitorUrl = "http://10.0.2.2/story/%s.do";
     public static final String testUrl = "http://127.0.0.1/story/%s.do";
 
     private static String getUrl(String url, String method) {
         return String.format(url, method);
-
     }
 
     /**
