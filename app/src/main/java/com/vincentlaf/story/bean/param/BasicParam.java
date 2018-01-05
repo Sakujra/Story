@@ -6,6 +6,7 @@ package com.vincentlaf.story.bean.param;
  */
 
 public class BasicParam {
+    private int userId;
     private Double lon;
     private Double lat;
     public Double getLon() {
@@ -21,4 +22,11 @@ public class BasicParam {
         this.lat = lat;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 }
