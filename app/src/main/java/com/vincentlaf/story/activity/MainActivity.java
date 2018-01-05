@@ -227,7 +227,7 @@ class MainPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return mFragmentList.size();
+         return mFragmentList.size();
     }
 
     @Override
