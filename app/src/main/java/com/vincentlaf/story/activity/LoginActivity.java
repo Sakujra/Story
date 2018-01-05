@@ -5,13 +5,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.alibaba.fastjson.JSONObject;
 import com.vincentlaf.story.R;
 import com.vincentlaf.story.bean.Method;
 import com.vincentlaf.story.bean.User;
@@ -20,8 +18,6 @@ import com.vincentlaf.story.exception.WrongRequestException;
 import com.vincentlaf.story.others.App;
 import com.vincentlaf.story.util.RequestUtil;
 import com.vincentlaf.story.util.ToastUtil;
-
-import java.io.IOException;
 
 /**
  * A login screen that offers login via email/password.
