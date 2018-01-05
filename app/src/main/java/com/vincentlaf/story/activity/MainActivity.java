@@ -40,6 +40,7 @@ import com.vincentlaf.story.util.RequestUtil;
 import com.vincentlaf.story.util.ToastUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -301,6 +302,7 @@ public class MainActivity extends AppCompatActivity
 class MainPagerAdapter extends FragmentPagerAdapter {
 
     private FragmentTab2 mFragmentTab2 = null;
+    private FragmentTab1 mFragmentTab1 = null;
 
     private FragmentManager mFragmentManager;
 
@@ -333,11 +335,16 @@ class MainPagerAdapter extends FragmentPagerAdapter {
         if (fragment instanceof FragmentTab2) {
             mFragmentTab2 = (FragmentTab2) fragment;
         }
+        if (fragment instanceof FragmentTab1) {
+            mFragmentTab1 = (FragmentTab1) fragment;
+        }
         mFragmentList.add(fragment);
         mTitleList.add(title);
         return this;
     }
-
+    public void addMarkers(List<StoryListInfo> storyListInfos){
+        mFragmentTab1.addMarkers(storyListInfos);
+    }
     public void frag2LoadMoreEnd() {
         mFragmentTab2.loadMoreEnd();
     }

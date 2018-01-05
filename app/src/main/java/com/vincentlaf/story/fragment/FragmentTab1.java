@@ -38,6 +38,7 @@ import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 import com.vincentlaf.story.R;
 import com.vincentlaf.story.activity.PostActivity;
+import com.vincentlaf.story.bean.netbean.StoryListInfo;
 import com.vincentlaf.story.others.App;
 import com.vincentlaf.story.others.AuthorAdapter;
 import com.vincentlaf.story.others.AuthorInformation;
@@ -62,6 +63,8 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
     private Marker currentMarker = null;
     private View allView;
     private WalkRouteOverlay currentWRL = null;
+    private MarkerCollection markerCollection = null;
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -115,11 +118,11 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
         //设置手势
         setGesture(mAMap);
         //向服务器请求数据后添加Marker
-        final MarkerCollection markerCollection = new MarkerCollection(mAMap);
-        Object a = new MarkerInfomation("a");
-        markerCollection.addMarkerWithGrowAnimation(30.537615, 114.364966, a);
-        markerCollection.addMarkerWithGrowAnimation(30.537615, 114.364066, a);
-        markerCollection.addMarkerWithGrowAnimation(30.537615, 114.363066, a);
+//        final MarkerCollection markerCollection = new MarkerCollection(mAMap);
+//        Object a = new MarkerInfomation("a");
+//        markerCollection.addMarkerWithGrowAnimation(30.537615, 114.364966, a);
+//        markerCollection.addMarkerWithGrowAnimation(30.537615, 114.364066, a);
+//        markerCollection.addMarkerWithGrowAnimation(30.537615, 114.363066, a);
         //设置自定义窗口
         mAMap.setInfoWindowAdapter(new AMap.InfoWindowAdapter() {
             @Override
@@ -184,9 +187,9 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
 
                 currentMarker = marker;
                 for (int i = 0; i < markerCollection.getMarkerList().size(); i++) {
-                    markerCollection.setMarkerIcon((Marker) markerCollection.getMarkerList().get(i), MarkerUtil.getMarkerNormalBitmap(null));
+
+                    // markerCollection.setMarkerIcon((Marker) markerCollection.getMarkerList().get(i), MarkerUtil.getMarkerNormalBitmap());
                 }
-                markerCollection.setMarkerIcon(marker, MarkerUtil.getMarkerActiveBitmap(null));
                 Toast.makeText(getContext(), "您点击了Marker", Toast.LENGTH_LONG).show();
                 marker.startAnimation();
                 marker.showInfoWindow();
@@ -266,6 +269,14 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
 
         mRouteSearch = new RouteSearch(getContext());
         mRouteSearch.setRouteSearchListener(this);
+    }
+
+    public void addMarkers(List<StoryListInfo> storyListInfos) {
+        markerCollection = new MarkerCollection(mAMap);
+        for (int i = 0; i < storyListInfos.size(); i++) {
+            StoryListInfo storyListInfo = storyListInfos.get(i);
+            markerCollection.addMarkerWithGrowAnimation(storyListInfo.getLat(), storyListInfo.getLon(), storyListInfo);
+        }
     }
 
     private void initRecyclerView(View view, List<AuthorInformation> authorInformationList) {
