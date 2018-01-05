@@ -11,12 +11,12 @@ public class QueryResult<T> {
     private List<T> rows;
     private long total;
     private int hasNext=0;
-    public int isHasNext() {
-        return hasNext;
+    public boolean isHasNext() {
+        return hasNext==1;
     }
 
-    public void setHasNext(int hasNext) {
-        this.hasNext = hasNext;
+    public void setHasNext(boolean hasNext) {
+        this.hasNext = hasNext?1:0;
     }
 
 
