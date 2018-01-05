@@ -86,7 +86,6 @@ public class LoginActivity extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         ToastUtil.toast("登录信息错误");
-
                                     }
                                 });
                             } else {
@@ -94,6 +93,12 @@ public class LoginActivity extends AppCompatActivity {
                                 StringBuilder str = new StringBuilder();
                                 str.append(returnUser.getUserId() + " " + returnUser.getUserName());
                                 App.setUser(returnUser);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ToastUtil.toast("登录成功");
+                                    }
+                                });
                             }
                         } catch (WrongRequestException e) {
                             runOnUiThread(new Runnable() {

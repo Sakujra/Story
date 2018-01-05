@@ -10,7 +10,16 @@ import java.util.List;
 public class QueryResult<T> {
     private List<T> rows;
     private long total;
-    private boolean hasNext=true;
+    private boolean hasNext=false;
+    public boolean isHasNext() {
+        return hasNext;
+    }
+
+    public void setHasNext(int hasNext) {
+        this.hasNext = hasNext==1;
+    }
+
+
     /**
      * @return rows
      */
@@ -34,13 +43,5 @@ public class QueryResult<T> {
      */
     public void setTotal(long total) {
         this.total = total;
-    }
-
-    public boolean isHasNext() {
-        return hasNext;
-    }
-
-    public void setHasNext(boolean hasNext) {
-        this.hasNext = hasNext;
     }
 }
