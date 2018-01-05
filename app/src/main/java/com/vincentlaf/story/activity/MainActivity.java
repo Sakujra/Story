@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity
                 param.setLat(App.getLat());
                 param.setPage(nextPage);
                 try {
-                    Result result = RequestUtil.doPost(RequestUtil.wifiUrl, Method.FIND_STORIES, param);
+                    Result result = RequestUtil.doPost(RequestUtil.monitorUrl, Method.FIND_STORIES, param);
                     int code = result.getCode();
                     //加载错误
                     if (code == 0) {

@@ -109,4 +109,14 @@ public class ExampleUnitTest extends TestCase{
         System.out.println(comments.getRows().size());
         System.out.println(comments.getTotal());
     }
+
+    public void testAllFav() throws IOException, WrongRequestException {
+        QueryListParam param=new QueryListParam();
+        param.setUserId(2);
+        param.setPage(1);
+        Result result=RequestUtil.doPost(RequestUtil.testUrl,Method.QUERY_ALL_FAVORITE,param);
+        QueryResult<StoryListInfo> favs=result.getList(StoryListInfo.class);
+        System.out.println(favs.getRows().size());
+        System.out.println(favs.getTotal());
+    }
 }
