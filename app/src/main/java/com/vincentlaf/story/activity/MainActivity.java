@@ -32,7 +32,7 @@ import com.vincentlaf.story.R;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends  AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private CustomViewPager mViewPager;
