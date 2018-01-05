@@ -95,6 +95,9 @@ public class LoginActivity extends AppCompatActivity {
                                         ToastUtil.toast("登录成功");
                                     }
                                 });
+                                Intent intent = new Intent();
+                                setResult(RESULT_OK, intent);
+                                finish();
                             }
                         } catch (WrongRequestException e) {
                             runOnUiThread(new Runnable() {

@@ -64,18 +64,24 @@ public class MarkerCollection {
     public void addMarker(double x, double y, StoryListInfo information) {
         LatLng latLng = new LatLng(x, y);
         MarkerOptions markerOption = new MarkerOptions()
-//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-<<<<<<< HEAD
-                .icon(BitmapDescriptorFactory.fromBitmap(MarkerUtil.getMarkerNormalBitmap(null)))
-=======
                 .icon(BitmapDescriptorFactory.fromBitmap(MarkerUtil.getMarkerNormalBitmap(information.getUserPic())))
->>>>>>> 4e72def90d3a43b994277bd0c24f29f4bb2000df
                 .position(latLng)
                 .title(latLng.toString())
                 .snippet("aa")
                 .draggable(true);
         Marker marker = aMap.addMarker(markerOption);
         marker.setObject(information);
+        markerList.add(marker);
+    }
+    public void addMarker(double x, double y) {
+        LatLng latLng = new LatLng(x, y);
+        MarkerOptions markerOption = new MarkerOptions()
+                .icon(BitmapDescriptorFactory.fromBitmap(MarkerUtil.getMarkerNormalBitmap(null)))
+                .position(latLng)
+                .title(latLng.toString())
+                .snippet("aa")
+                .draggable(true);
+        Marker marker = aMap.addMarker(markerOption);
         markerList.add(marker);
     }
 
@@ -89,12 +95,7 @@ public class MarkerCollection {
     public void addMarkerWithGrowAnimation(double x, double y, StoryListInfo information) {
         LatLng latLng = new LatLng(x, y);
         MarkerOptions markerOption = new MarkerOptions()
-//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-<<<<<<< HEAD
-                .icon(BitmapDescriptorFactory.fromBitmap(MarkerUtil.getMarkerNormalBitmap(null)))
-=======
                 .icon(BitmapDescriptorFactory.fromBitmap(MarkerUtil.getMarkerNormalBitmap(information.getUserPic())))
->>>>>>> 4e72def90d3a43b994277bd0c24f29f4bb2000df
                 .position(latLng)
                 .title(latLng.toString())
                 .snippet("aa")

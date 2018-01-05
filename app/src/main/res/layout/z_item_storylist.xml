@@ -51,7 +51,7 @@
                 android:id="@+id/z_story_item_username"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1.5"
                 android:text="Alex Boyd"
                 android:textSize="12dp" />
 
@@ -67,7 +67,7 @@
                 android:id="@+id/z_story_item_distance"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:gravity="right"
                 android:paddingRight="8dp"
                 android:text="1.6km" />

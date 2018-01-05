@@ -9,14 +9,6 @@
         android:layout_height="match_parent" />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/z_recyclerview_frag1"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="bottom"
-        android:visibility="gone" />
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +17,7 @@
         <LinearLayout
             android:id="@+id/z_linearlayout_map_info_base"
             android:layout_width="match_parent"
-            android:layout_height="24dp"
+            android:layout_height="30dp"
             android:layout_alignParentBottom="true"
             android:background="@color/colorPrimary"
             android:orientation="horizontal" />
@@ -40,11 +32,13 @@
             android:padding="5dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/z_image_building"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/avatar_1" />
 
             <TextView
+                android:id="@+id/z_textview_place_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -60,7 +54,7 @@
             android:layout_above="@+id/z_linearlayout_map_info_base"
             android:layout_marginBottom="-16dp"
             android:layout_marginLeft="-20dp"
-            android:background="@drawable/z_map_info_sidebar_bg"
+            android:background="@drawable/z_map_info_sidebar_riple"
             android:gravity="right"
             android:padding="5dp">
 
@@ -87,7 +81,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="-16dp"
             android:layout_marginRight="-20dp"
-            android:background="@drawable/z_map_info_sidebar_bg"
+            android:background="@drawable/z_map_info_sidebar_riple"
             android:padding="5dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -106,6 +100,5 @@
         </LinearLayout>
 
     </RelativeLayout>
-
 
 </android.support.design.widget.CoordinatorLayout>

@@ -27,9 +27,10 @@ public class RequestUtil {
 
     private static final String TAG = "RequestUtil";
 
-    //192.168.1.100 wifi地址
-    public static final String wifiUrl = "http://192.168.1.101/story/%s.do";
-    public static final String headimage = "http://192.168.1.101/story/images/head/%s";
+    //    47.93.198.51
+    //192.168.1.101 wifi地址
+    public static final String wifiUrl = "http://47.93.198.51/story/%s.do";
+    public static final String headimage = "http://47.93.198.51/story/images/head/%s";
     public static final String monitorUrl = "http://10.0.2.2/story/%s.do";
     public static final String testUrl = "http://127.0.0.1/story/%s.do";
 

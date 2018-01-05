@@ -12,7 +12,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <Button
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/button_userPic"
         android:layout_width="@dimen/dp_72"
         android:layout_height="@dimen/dp_72"

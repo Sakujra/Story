@@ -23,8 +23,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.vincentlaf.story.bean.Method;
 import com.vincentlaf.story.bean.netbean.StoryListInfo;
 import com.vincentlaf.story.bean.param.QueryListParam;
@@ -40,9 +43,12 @@ import com.vincentlaf.story.util.RequestUtil;
 import com.vincentlaf.story.util.ToastUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static final int SIGN_IN = 0;
 
     public ArrayList<StoryListInfo> mItemList = new ArrayList<>();
 
@@ -53,6 +59,8 @@ public class MainActivity extends AppCompatActivity
     private CustomViewPager mViewPager;
     private TabLayout mTabLayout;
     private NavigationView mNaviView;
+
+    private NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +78,8 @@ public class MainActivity extends AppCompatActivity
         //初始化ViewPager
         mViewPager.setAdapter(
                 new MainPagerAdapter(getSupportFragmentManager())
-                        .addFragment(new FragmentTab1(), "TAB1")
-                        .addFragment(new FragmentTab2(), "TAB2")
+                        .addFragment(new FragmentTab1(), "Map")
+                        .addFragment(new FragmentTab2(), "Story")
         );
         //将TabLayout与ViewPager关联
         mTabLayout.setupWithViewPager(mViewPager);
@@ -91,11 +99,36 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.getHeaderView(0).findViewById(R.id.button_userPic).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivityForResult(intent, SIGN_IN);
+            }
+        });
 
         //请求权限
         askForPermissions();
+    }
+
+
+    //处理拍照返回结果
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case SIGN_IN:
+                if (resultCode == RESULT_OK) {
+                    ImageView imageView = mNavigationView.getHeaderView(0).findViewById(R.id.button_userPic);
+                    Glide.with(this)
+                            .load(RequestUtil.getHeadImage(App.getUser().getUserPic()))
+                            .into(imageView);
+                    TextView textView = mNavigationView.getHeaderView(0).findViewById(R.id.nav_username);
+                    textView.setText(App.getUser().getUserName());
+                }
+                break;
+        }
     }
 
     //加载数据
@@ -121,7 +154,10 @@ public class MainActivity extends AppCompatActivity
                 param.setLat(App.getLat());
                 param.setPage(nextPage);
                 try {
-                    Result result = RequestUtil.doPost(RequestUtil.monitorUrl, Method.FIND_STORIES, param);
+                    Result result = RequestUtil.doPost(RequestUtil.wifiUrl, Method.FIND_STORIES, param);
+
+                    Log.d(TAG, "run " + result.toString());
+
                     int code = result.getCode();
                     //加载错误
                     if (code == 0) {
@@ -149,9 +185,10 @@ public class MainActivity extends AppCompatActivity
                             public void run() {
                                 MainPagerAdapter adapter = (MainPagerAdapter) mViewPager.getAdapter();
                                 //没有下一页
+                                adapter.addMarkers(mItemList);
                                 if (!hasNextPage) {
                                     adapter.frag2LoadMoreEnd();
-                                    ToastUtil.toast("全部加载");
+                                    ToastUtil.toast("已全部加载");
                                 } else {
                                     //还有下一页
                                     adapter.frag2LoadMoreComplete();
@@ -254,10 +291,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                //Toast.makeText(this, "settings 尚未实现", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, LoginActivity.class));
-                break;
+//            case R.id.action_settings:
+//                startActivity(new Intent(this, LoginActivity.class));
+//                break;
             case R.id.action_post:
                 startActivity(new Intent(this, PostActivity.class));
                 break;
@@ -298,6 +334,7 @@ public class MainActivity extends AppCompatActivity
 class MainPagerAdapter extends FragmentPagerAdapter {
 
     private FragmentTab2 mFragmentTab2 = null;
+    private FragmentTab1 mFragmentTab1 = null;
 
     private FragmentManager mFragmentManager;
 
@@ -330,9 +367,16 @@ class MainPagerAdapter extends FragmentPagerAdapter {
         if (fragment instanceof FragmentTab2) {
             mFragmentTab2 = (FragmentTab2) fragment;
         }
+        if (fragment instanceof FragmentTab1) {
+            mFragmentTab1 = (FragmentTab1) fragment;
+        }
         mFragmentList.add(fragment);
         mTitleList.add(title);
         return this;
+    }
+
+    public void addMarkers(List<StoryListInfo> storyListInfos) {
+        mFragmentTab1.addMarkers(storyListInfos);
     }
 
     public void frag2LoadMoreEnd() {

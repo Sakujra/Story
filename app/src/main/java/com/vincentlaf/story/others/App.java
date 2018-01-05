@@ -27,6 +27,14 @@ public class App extends Application {
         return mContext;
     }
 
+    public static void setLon(Double lon) {
+        App.lon = lon;
+    }
+
+    public static void setLat(Double lat) {
+        App.lat = lat;
+    }
+
     public static User getUser() {
         return user;
     }

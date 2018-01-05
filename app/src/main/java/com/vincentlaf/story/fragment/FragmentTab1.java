@@ -1,6 +1,5 @@
 package com.vincentlaf.story.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -15,14 +14,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
-import com.amap.api.maps.model.BitmapDescriptor;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
@@ -43,12 +40,10 @@ import com.vincentlaf.story.others.App;
 import com.vincentlaf.story.others.AuthorAdapter;
 import com.vincentlaf.story.others.AuthorInformation;
 import com.vincentlaf.story.others.MarkerCollection;
-import com.vincentlaf.story.others.MarkerInfomation;
+import com.vincentlaf.story.others.WalkRouteOverlay;
 import com.vincentlaf.story.util.MarkerUtil;
 import com.vincentlaf.story.util.ToastUtil;
-import com.vincentlaf.story.others.WalkRouteOverlay;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,7 +59,10 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
     private View allView;
     private WalkRouteOverlay currentWRL = null;
     private MarkerCollection markerCollection = null;
+    private TextView mPlaceName;
+    private LatLonPoint currentPoint = null;
 
+    private ImageView mImgBuilding;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -86,23 +84,10 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
     }
 
     private void initview(Bundle savedInstanceState, final View view) {
-        //导航按钮事件
-        view.findViewById(R.id.z_ll_navigate).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ToastUtil.toast("go");
-            }
-        });
-
-        //发布按钮事件
-        view.findViewById(R.id.z_ll_post).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getContext(), PostActivity.class));
-            }
-        });
-
+        allView = view;
         mMapView = view.findViewById(R.id.z_map);
+        mPlaceName = view.findViewById(R.id.z_textview_place_name);
+        mImgBuilding = view.findViewById(R.id.z_image_building);
         mMapView.onCreate(savedInstanceState);
         if (mAMap == null) {
             mAMap = mMapView.getMap();
@@ -110,6 +95,7 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
 
         UiSettings uiSettings = mAMap.getUiSettings();
         uiSettings.setLogoBottomMargin(-50);
+        uiSettings.setZoomControlsEnabled(false);
         // 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
         //初始化定位蓝点样式类
         setLocation(mAMap);
@@ -124,28 +110,127 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
 //        markerCollection.addMarkerWithGrowAnimation(30.537615, 114.364066, a);
 //        markerCollection.addMarkerWithGrowAnimation(30.537615, 114.363066, a);
         //设置自定义窗口
+        setInfoWin();
+        //地图poi点击功能
+        bindPioClick();
+        //marker点击事件
+        bindMarkClick();
+        //导航点击事件
+        bindNavigationBtnClick();
+        //poot事件
+        bingPostClick();
+
+        final MarkerCollection markerCollection1 = new MarkerCollection(mAMap);
+        StoryListInfo s = new StoryListInfo();
+        s.setUserPic("http://img3.imgtn.bdimg.com/it/u=1270330953,3533676763&fm=214&gp=0.jpg");
+        markerCollection1.addMarker(114.357845, 30.529501, new StoryListInfo());
+
+        mAMap.setOnMapClickListener(new AMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+            }
+        });
+        mRouteSearch = new RouteSearch(getContext());
+        mRouteSearch.setRouteSearchListener(this);
+    }
+
+    private void bindPioClick() {
+        mAMap.setOnPOIClickListener(new AMap.OnPOIClickListener() {
+            MarkerCollection markerPoiCollection = new MarkerCollection(mAMap);
+
+            @Override
+            public void onPOIClick(Poi poi) {
+                if (currentWRL != null) {
+                    currentWRL.removeFromMap();
+                }
+                markerPoiCollection.clearAll();
+                markerPoiCollection.addMarker(poi.getCoordinate().latitude, poi.getCoordinate().longitude);
+                currentPoint = new LatLonPoint(poi.getCoordinate().latitude, poi.getCoordinate().longitude);
+                mImgBuilding.setImageResource(R.drawable.ic_places_24dp);
+                mPlaceName.setText(poi.getName());
+            }
+        });
+    }
+
+    private void bindMarkClick() {
+        mAMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
+
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                for (int i = 0; i <markerCollection.getMarkerList().size() ; i++) {
+                    Marker marker1=(Marker) markerCollection.getMarkerList().get(i);
+                    StoryListInfo storyListInfo1=(StoryListInfo) marker1.getObject();
+                    markerCollection.setMarkerIcon(marker1,MarkerUtil.getMarkerNormalBitmap(storyListInfo1.getUserPic()));
+                }
+                currentPoint = new LatLonPoint(marker.getPosition().latitude,marker.getPosition().longitude);
+                StoryListInfo storyListInfo=(StoryListInfo) marker.getObject();
+                markerCollection.setMarkerIcon(marker, MarkerUtil.getMarkerActiveBitmap(storyListInfo.getUserPic()));
+                marker.startAnimation();
+
+//                marker.showInfoWindow();
+                return true;
+            }
+        });
+    }
+
+    private void bindNavigationBtnClick() {
+        //导航按钮事件
+        allView.findViewById(R.id.z_ll_navigate).setOnClickListener(new View.OnClickListener() {
+            boolean isSelected = false;
+
+
+            @Override
+            public void onClick(View view) {
+                if (currentPoint != null) {
+//                    if (!isSelected) {
+//                        searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WALK_DEFAULT,
+//                                new LatLonPoint(mAMap.getMyLocation().getLatitude(), mAMap.getMyLocation().getLongitude()),
+//                                new LatLonPoint(currentPoint.getLatitude(), currentPoint.getLongitude())
+//                        );
+//                        isSelected = true;
+//                    } else {
+//                        isSelected = false;
+//                        if (currentWRL != null) {
+//                            currentWRL.removeFromMap();
+//                        }
+//                    }
+                    searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WALK_DEFAULT,
+                            new LatLonPoint(mAMap.getMyLocation().getLatitude(), mAMap.getMyLocation().getLongitude()),
+                            new LatLonPoint(currentPoint.getLatitude(), currentPoint.getLongitude())
+                    );
+                } else {
+                    ToastUtil.toast("没有选中目的地");
+                }
+
+                ToastUtil.toast("go");
+            }
+        });
+    }
+
+    private void bingPostClick() {
+        //发布按钮事件
+        allView.findViewById(R.id.z_ll_post).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), PostActivity.class));
+            }
+        });
+    }
+
+    private void setInfoWin() {
         mAMap.setInfoWindowAdapter(new AMap.InfoWindowAdapter() {
             @Override
             public View getInfoWindow(Marker marker) {
-                /*if(infoWindow == null) {
-                    infoWindow = LayoutInflater.from(getContext()).inflate(
-                            R.layout.custom_info_window, null);
-                }
-                render(marker, infoWindow);
-                return infoWindow;*/
                 return null;
             }
 
             @Override
             public View getInfoContents(Marker marker) {
 //                View infoContent = LayoutInflater.from(getContext()).inflate(
-//                        R.layout.custom_info_contents, null);
-                View infoContent = LayoutInflater.from(getContext()).inflate(
-                        R.layout.z_map_marker_active, null);
-//                ((ImageView) infoContent.findViewById(R.id.badge))
-//                        .setImageResource(R.drawable.badge_sa);
-                render(marker, infoContent);
-                return infoContent;
+//                        R.layout.z_map_marker_active, null);
+//                render(marker, infoContent);
+                return null;
             }
 
             public void render(Marker marker, View view) {
@@ -175,100 +260,8 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
 //                } else {
 //                    snippetUi.setText("");
 //                }
-
-            }
-
-        });
-
-        mAMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
-
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-
-                currentMarker = marker;
-                for (int i = 0; i < markerCollection.getMarkerList().size(); i++) {
-
-                    // markerCollection.setMarkerIcon((Marker) markerCollection.getMarkerList().get(i), MarkerUtil.getMarkerNormalBitmap());
-                }
-                Toast.makeText(getContext(), "您点击了Marker", Toast.LENGTH_LONG).show();
-                marker.startAnimation();
-                marker.showInfoWindow();
-                initRecyclerView(view, getAuthorInformationList());
-//                searchRouteResult(ROUTE_TYPE_WALK,RouteSearch.WALK_DEFAULT,
-//                        new LatLonPoint(mAMap.getMyLocation().getLatitude(),mAMap.getMyLocation().getLongitude()),
-//                        new LatLonPoint(marker.getPosition().latitude,marker.getPosition().longitude)
-//                );
-
-                return true;
             }
         });
-        //地图poi点击功能
-        final MarkerCollection markerCollection1 = new MarkerCollection(mAMap);
-        mAMap.setOnPOIClickListener(new AMap.OnPOIClickListener() {
-            @Override
-            public void onPOIClick(Poi poi) {
-//                markerCollection1.clearAll();
-//                markerCollection1.addMarker(poi.getCoordinate().latitude, poi.getCoordinate().longitude, new MarkerInfomation(poi.getName()));
-//                Marker marker = (Marker) markerCollection1.getMarkerList().get(0);
-//                marker.showInfoWindow();
-//                searchRouteResult(ROUTE_TYPE_WALK,RouteSearch.WALK_DEFAULT,
-//                        new LatLonPoint(mAMap.getMyLocation().getLatitude(),mAMap.getMyLocation().getLongitude()),
-//                        new LatLonPoint(marker.getPosition().latitude,marker.getPosition().longitude)
-//                );
-            }
-        });
-        mAMap.setOnMapClickListener(new AMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-//                view.findViewById(R.id.z_recyclerview_frag1).setVisibility(View.INVISIBLE);
-//                if (markerCollection.getMarkerList().size() > 0) {
-//                    for (int i = 0; i < markerCollection.getMarkerList().size(); i++) {
-//                        Marker marker = (Marker) markerCollection.getMarkerList().get(i);
-//                        marker.hideInfoWindow();
-//                    }
-//                }
-//                if (markerCollection1.getMarkerList().size() > 0) {
-//                    for (int i = 0; i < markerCollection1.getMarkerList().size(); i++) {
-//                        Marker marker = (Marker) markerCollection1.getMarkerList().get(i);
-//                        marker.hideInfoWindow();
-//                    }
-//                }
-            }
-        });
-        //步行路线规划
-//        final Button button = view.findViewById(R.id.navigation_button);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            boolean isSelected = false;
-//
-//            @SuppressLint("ResourceType")
-//            @Override
-//            public void onClick(View view) {
-//                if (currentMarker != null) {
-//                    if (!isSelected) {
-//                        button.setBackgroundResource(R.drawable.z_item_storylist_bg_press);
-//                        searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WALK_DEFAULT,
-//                                new LatLonPoint(mAMap.getMyLocation().getLatitude(), mAMap.getMyLocation().getLongitude()),
-//                                new LatLonPoint(currentMarker.getPosition().latitude, currentMarker.getPosition().longitude)
-//                        );
-//                        isSelected = true;
-//                    } else {
-//                        isSelected = false;
-//                        button.setBackgroundResource(R.drawable.z_item_storylist_bg_normal);
-//                        if (currentWRL != null) {
-//                            currentWRL.removeFromMap();
-//                        }
-//                    }
-//
-//                } else {
-//                    ToastUtil.toast("没有选中目的地");
-//                }
-//
-//            }
-//        });
-
-
-        mRouteSearch = new RouteSearch(getContext());
-        mRouteSearch.setRouteSearchListener(this);
     }
 
     public void addMarkers(List<StoryListInfo> storyListInfos) {
@@ -277,32 +270,6 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
             StoryListInfo storyListInfo = storyListInfos.get(i);
             markerCollection.addMarkerWithGrowAnimation(storyListInfo.getLat(), storyListInfo.getLon(), storyListInfo);
         }
-    }
-
-    private void initRecyclerView(View view, List<AuthorInformation> authorInformationList) {
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.z_recyclerview_frag1);
-        if (recyclerView.getVisibility() == View.INVISIBLE) {
-            recyclerView.setVisibility(View.VISIBLE);
-        }
-        LinearLayoutManager layoutManager = new LinearLayoutManager(App.getContext());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(layoutManager);
-        SnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(recyclerView);
-        AuthorAdapter adapter = new AuthorAdapter(authorInformationList);
-        recyclerView.setAdapter(adapter);
-    }
-
-    private List getAuthorInformationList() {
-        List<AuthorInformation> authorInformationList = new ArrayList<>();
-        authorInformationList.add(new AuthorInformation("张世杰", R.drawable.avatar_1, "我牛逼", "我超级帅！"));
-        authorInformationList.add(new AuthorInformation("张世杰", R.drawable.avatar_1, "我牛逼", "我超级帅！"));
-        authorInformationList.add(new AuthorInformation("张世杰", R.drawable.avatar_1, "我牛逼", "我超级帅！"));
-        authorInformationList.add(new AuthorInformation("张世杰", R.drawable.avatar_1, "我牛逼", "我超级帅！"));
-        authorInformationList.add(new AuthorInformation("张世杰", R.drawable.avatar_1, "我牛逼", "我超级帅！"));
-        authorInformationList.add(new AuthorInformation("张世杰", R.drawable.avatar_1, "我牛逼", "我超级帅！"));
-        authorInformationList.add(new AuthorInformation("张世杰", R.drawable.avatar_1, "我牛逼", "我超级帅！"));
-        return authorInformationList;
     }
 
     /**
@@ -351,9 +318,10 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
             public void onMyLocationChange(Location location) {
                 //从location对象中获取经纬度信息，地址描述信息，建议拿到位置之后调用逆地理编码接口获取
                 Log.d("位置信息", location.toString());
+                App.setLat(location.getLatitude());
+                App.setLon(location.getLongitude());
             }
         });
-
     }
 
     /**
