@@ -14,7 +14,9 @@ public class QueryResult<T> {
     public boolean isHasNext() {
         return hasNext;
     }
-
+    public void setHasNext(boolean hasNext) {
+        this.hasNext = hasNext;
+    }
     public void setHasNext(int hasNext) {
         this.hasNext = hasNext==1;
     }

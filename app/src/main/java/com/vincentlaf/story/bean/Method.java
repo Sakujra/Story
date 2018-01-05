@@ -25,5 +25,6 @@ public class Method {
     /** 查看所有评论*/
     public static final String QUERY_ALL_COMMENT="queryAllComment";
 
-
+    /** 查看收藏*/
+    public static final String QUERY_ALL_FAVORITE="queryFavs";
 }
