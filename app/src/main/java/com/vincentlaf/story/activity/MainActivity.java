@@ -162,11 +162,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    /*@Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                //Toast.makeText(this, "settings 尚未实现", Toast.LENGTH_SHORT).show();
+
 
             case R.id.action_post:
                 startActivity(new Intent(this, PostActivity.class));
@@ -176,7 +175,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }*/
+    }
     /*
     左侧边栏drawerLayout的item按钮响应事件
      */
@@ -197,7 +196,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-            startActivity(new Intent(this, PostActivity.class));
+            /*startActivity(new Intent(this, PostActivity.class));*/
         }else if (id == R.id.nav_settings) {
 
         }else if (id == R.id.nav_friend) {
