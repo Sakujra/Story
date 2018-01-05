@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);//初始化layout布局文件为可以使用的context对象
+        setContentView(R.layout.activity_main);  //初始化layout布局文件为可以使用的context对象
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
