@@ -19,4 +19,6 @@
 
     <color name="z_login_background">#f0f0f0</color>
     <color name="z_login_foreground">#353535</color>
+
+    <color name="z_map_info_center_bg">#5284dc</color>
 </resources>
