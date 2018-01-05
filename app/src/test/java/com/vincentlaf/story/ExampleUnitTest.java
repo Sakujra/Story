@@ -3,10 +3,13 @@ package com.vincentlaf.story;
 import com.alibaba.fastjson.JSONObject;
 import com.vincentlaf.story.bean.Method;
 import com.vincentlaf.story.bean.User;
+import com.vincentlaf.story.bean.netbean.Story;
 import com.vincentlaf.story.bean.netbean.StoryListInfo;
 import com.vincentlaf.story.bean.param.BasicParam;
 import com.vincentlaf.story.bean.param.FullStoryParam;
 import com.vincentlaf.story.bean.param.QueryListParam;
+import com.vincentlaf.story.bean.param.StoryKeyListParam;
+import com.vincentlaf.story.bean.result.Comment;
 import com.vincentlaf.story.bean.result.QueryResult;
 import com.vincentlaf.story.bean.result.Result;
 import com.vincentlaf.story.exception.WrongRequestException;
@@ -77,5 +80,33 @@ public class ExampleUnitTest extends TestCase{
         param.setPlace(23.264686,98.568451,"placeName");
         Result result=RequestUtil.doPost(RequestUtil.testUrl,Method.PUBLISH_STORY,param);
         System.out.println(result.toString());
+    }
+
+    public void testQueryDetailStory() throws IOException, WrongRequestException {
+        StoryKeyListParam param = new StoryKeyListParam();
+        param.setCurUserId(2);
+        param.setStoryId(1);
+        Result result=RequestUtil.doPost(RequestUtil.testUrl,Method.QUERY_STORY_DETAIL,param);
+        Story story = result.getEntityData(Story.class);
+        System.out.println(story.getDate());
+    }
+
+    public void testPushComment() throws IOException, WrongRequestException {
+        Comment comment=new Comment();
+        comment.setSid(1);
+        comment.setUid(2);
+        comment.setCtt("Comment entity");
+        Result result=RequestUtil.doPost(RequestUtil.testUrl,Method.PUSH_COMMENT,comment);
+        System.out.println(result.getCode());
+    }
+
+    public void testAllComment() throws IOException, WrongRequestException {
+        StoryKeyListParam param=new StoryKeyListParam();
+        param.setStoryId(1);
+        param.setPage(1);
+        Result result=RequestUtil.doPost(RequestUtil.testUrl,Method.QUERY_ALL_COMMENT,param);
+        QueryResult<Comment> comments=result.getList(Comment.class);
+        System.out.println(comments.getRows().size());
+        System.out.println(comments.getTotal());
     }
 }

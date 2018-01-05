@@ -122,7 +122,7 @@ public class RegisterActivity extends AppCompatActivity {
                         user.setUserName(nickname);
                         user.setUserPicEntity(img);
                         try {
-                            Result result = RequestUtil.doPost(RequestUtil.wifiUrl, Method.REGISTER, user);
+                            Result result = RequestUtil.doPost(RequestUtil.monitorUrl, Method.REGISTER, user);
                             int code = result.getCode();
                             if (code == 0) {
                                 runOnUiThread(new Runnable() {
