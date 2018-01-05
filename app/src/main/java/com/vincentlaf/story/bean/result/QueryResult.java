@@ -10,13 +10,13 @@ import java.util.List;
 public class QueryResult<T> {
     private List<T> rows;
     private long total;
-    private int hasNext=0;
+    private boolean hasNext=false;
     public boolean isHasNext() {
-        return hasNext==1;
+        return hasNext;
     }
 
-    public void setHasNext(boolean hasNext) {
-        this.hasNext = hasNext?1:0;
+    public void setHasNext(int hasNext) {
+        this.hasNext = hasNext==1;
     }
 
 
