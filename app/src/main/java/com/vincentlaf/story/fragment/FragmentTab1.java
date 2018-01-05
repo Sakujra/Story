@@ -1,6 +1,7 @@
 package com.vincentlaf.story.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 import com.vincentlaf.story.R;
+import com.vincentlaf.story.activity.PostActivity;
 import com.vincentlaf.story.others.App;
 import com.vincentlaf.story.others.AuthorAdapter;
 import com.vincentlaf.story.others.AuthorInformation;
@@ -61,7 +63,6 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
     private View allView;
     private WalkRouteOverlay currentWRL = null;
 
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -82,7 +83,22 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
     }
 
     private void initview(Bundle savedInstanceState, final View view) {
-        allView = view;
+        //导航按钮事件
+        view.findViewById(R.id.z_ll_navigate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToastUtil.toast("go");
+            }
+        });
+
+        //发布按钮事件
+        view.findViewById(R.id.z_ll_post).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), PostActivity.class));
+            }
+        });
+
         mMapView = view.findViewById(R.id.z_map);
         mMapView.onCreate(savedInstanceState);
         if (mAMap == null) {
@@ -160,6 +176,7 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
             }
 
         });
+
         mAMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
 
             @Override
@@ -167,9 +184,9 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
 
                 currentMarker = marker;
                 for (int i = 0; i < markerCollection.getMarkerList().size(); i++) {
-                    markerCollection.setMarkerIcon((Marker) markerCollection.getMarkerList().get(i), MarkerUtil.getMarkerNormalBitmap());
+                    markerCollection.setMarkerIcon((Marker) markerCollection.getMarkerList().get(i), MarkerUtil.getMarkerNormalBitmap(null));
                 }
-                markerCollection.setMarkerIcon(marker, MarkerUtil.getMarkerActiveBitmap());
+                markerCollection.setMarkerIcon(marker, MarkerUtil.getMarkerActiveBitmap(null));
                 Toast.makeText(getContext(), "您点击了Marker", Toast.LENGTH_LONG).show();
                 marker.startAnimation();
                 marker.showInfoWindow();

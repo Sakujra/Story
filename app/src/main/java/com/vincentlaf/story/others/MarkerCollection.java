@@ -64,7 +64,7 @@ public class MarkerCollection {
         LatLng latLng = new LatLng(x, y);
         MarkerOptions markerOption = new MarkerOptions()
 //                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                .icon(BitmapDescriptorFactory.fromBitmap(MarkerUtil.getMarkerNormalBitmap()))
+                .icon(BitmapDescriptorFactory.fromBitmap(MarkerUtil.getMarkerNormalBitmap(null)))
                 .position(latLng)
                 .title(latLng.toString())
                 .snippet("aa")
@@ -85,7 +85,7 @@ public class MarkerCollection {
         LatLng latLng = new LatLng(x, y);
         MarkerOptions markerOption = new MarkerOptions()
 //                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                .icon(BitmapDescriptorFactory.fromBitmap(MarkerUtil.getMarkerNormalBitmap()))
+                .icon(BitmapDescriptorFactory.fromBitmap(MarkerUtil.getMarkerNormalBitmap(null)))
                 .position(latLng)
                 .title(latLng.toString())
                 .snippet("aa")
@@ -97,7 +97,7 @@ public class MarkerCollection {
     }
 
 
-    public  void setMarkerIcon(Marker marker,Bitmap bitmap){
+    public void setMarkerIcon(Marker marker, Bitmap bitmap) {
         marker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
     }
 
@@ -117,11 +117,12 @@ public class MarkerCollection {
 
     /**
      * 为一个marker设置生长动画
+     *
      * @param marker
      */
     public void setGrowAnimation(Marker marker) {
-        if(marker != null) {
-            Animation animation = new ScaleAnimation(0,1,0,1);
+        if (marker != null) {
+            Animation animation = new ScaleAnimation(0, 1, 0, 1);
             animation.setInterpolator(new LinearInterpolator());
             //整个移动所需要的时间
             animation.setDuration(1000);
@@ -133,25 +134,25 @@ public class MarkerCollection {
 
     /**
      * 判断2个marker是否相等,位置相等就认为相等
+     *
      * @param marker1
      * @param marker2
      * @return
      */
-    public static boolean equal(Marker marker1,Marker marker2){
-        boolean equal=false;
-        if(marker1!=null&&marker2!=null){
-            Double la1=new Double(marker1.getPosition().latitude);
-            Double lo1=new Double(marker1.getPosition().longitude);
-            Double la2=new Double(marker2.getPosition().latitude);
-            Double lo2=new Double(marker2.getPosition().longitude);
-            if(la1.equals(la2)&&lo1.equals(lo2)){
-                equal=true;
+    public static boolean equal(Marker marker1, Marker marker2) {
+        boolean equal = false;
+        if (marker1 != null && marker2 != null) {
+            Double la1 = new Double(marker1.getPosition().latitude);
+            Double lo1 = new Double(marker1.getPosition().longitude);
+            Double la2 = new Double(marker2.getPosition().latitude);
+            Double lo2 = new Double(marker2.getPosition().longitude);
+            if (la1.equals(la2) && lo1.equals(lo2)) {
+                equal = true;
             }
         }
 
         return equal;
     }
-
 
 
 }
