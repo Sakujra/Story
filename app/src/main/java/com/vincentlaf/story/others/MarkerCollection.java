@@ -15,6 +15,7 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.animation.Animation;
 import com.amap.api.maps.model.animation.ScaleAnimation;
 import com.vincentlaf.story.R;
+import com.vincentlaf.story.bean.netbean.StoryListInfo;
 import com.vincentlaf.story.util.MarkerUtil;
 
 import java.util.ArrayList;
@@ -60,11 +61,11 @@ public class MarkerCollection {
      * @param y           纬度
      * @param information 信息
      */
-    public void addMarker(double x, double y, Object information) {
+    public void addMarker(double x, double y, StoryListInfo information) {
         LatLng latLng = new LatLng(x, y);
         MarkerOptions markerOption = new MarkerOptions()
 //                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                .icon(BitmapDescriptorFactory.fromBitmap(MarkerUtil.getMarkerNormalBitmap()))
+                .icon(BitmapDescriptorFactory.fromBitmap(MarkerUtil.getMarkerNormalBitmap(information.getUserPic())))
                 .position(latLng)
                 .title(latLng.toString())
                 .snippet("aa")
@@ -81,11 +82,11 @@ public class MarkerCollection {
      * @param y           纬度
      * @param information 信息
      */
-    public void addMarkerWithGrowAnimation(double x, double y, Object information) {
+    public void addMarkerWithGrowAnimation(double x, double y, StoryListInfo information) {
         LatLng latLng = new LatLng(x, y);
         MarkerOptions markerOption = new MarkerOptions()
 //                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                .icon(BitmapDescriptorFactory.fromBitmap(MarkerUtil.getMarkerNormalBitmap()))
+                .icon(BitmapDescriptorFactory.fromBitmap(MarkerUtil.getMarkerNormalBitmap(information.getUserPic())))
                 .position(latLng)
                 .title(latLng.toString())
                 .snippet("aa")
