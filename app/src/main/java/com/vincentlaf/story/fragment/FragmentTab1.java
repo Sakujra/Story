@@ -159,12 +159,10 @@ public class FragmentTab1 extends Fragment implements RouteSearch.OnRouteSearchL
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-
-
-               for (int i = 0; i <markerCollection.getMarkerList().size() ; i++) {
-                    markerCollection.setMarkerIcon((Marker)markerCollection.getMarkerList().get(i),MarkerUtil.getMarkerNormalBitmap());
+                for (int i = 0; i < markerCollection.getMarkerList().size(); i++) {
+                    markerCollection.setMarkerIcon((Marker) markerCollection.getMarkerList().get(i), MarkerUtil.getMarkerNormalBitmap());
                 }
-                markerCollection.setMarkerIcon(marker,MarkerUtil.getMarkerActiveBitmap());
+                markerCollection.setMarkerIcon(marker, MarkerUtil.getMarkerActiveBitmap());
                 Toast.makeText(getContext(), "您点击了Marker", Toast.LENGTH_LONG).show();
                 marker.startAnimation();
                 marker.showInfoWindow();

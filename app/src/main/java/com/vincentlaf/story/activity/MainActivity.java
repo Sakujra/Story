@@ -122,6 +122,9 @@ public class MainActivity extends AppCompatActivity
                 param.setPage(nextPage);
                 try {
                     Result result = RequestUtil.doPost(RequestUtil.wifiUrl, Method.FIND_STORIES, param);
+
+                    Log.d(TAG, "run " + result.toString());
+
                     int code = result.getCode();
                     //加载错误
                     if (code == 0) {
@@ -151,7 +154,7 @@ public class MainActivity extends AppCompatActivity
                                 //没有下一页
                                 if (!hasNextPage) {
                                     adapter.frag2LoadMoreEnd();
-                                    ToastUtil.toast("全部加载");
+                                    ToastUtil.toast("已全部加载");
                                 } else {
                                     //还有下一页
                                     adapter.frag2LoadMoreComplete();
