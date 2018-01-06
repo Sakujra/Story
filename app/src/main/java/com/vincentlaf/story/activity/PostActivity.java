@@ -82,7 +82,7 @@ public class PostActivity extends AppCompatActivity {
         mInputTitle = (EditText) findViewById(R.id.z_input_title);
 
         mImageView = (ImageView) findViewById(R.id.z_imageview_post);
-        // Glide.with(this).load(mImgUrl).into(mImageView);
+         Glide.with(this).load(mImgUrl).into(mImageView);
 
         setupBottomDialog();
 

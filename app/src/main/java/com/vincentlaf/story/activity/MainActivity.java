@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity
 //                startActivity(new Intent(this, LoginActivity.class));
 //                break;
             case R.id.action_post:
-                startActivity(new Intent(this, PostActivity.class));
+                startActivity(new Intent(this, StoryDetailsActivity.class));
                 break;
             default:
         }
